@@ -43,10 +43,9 @@ public class Funcion {
     }
     
     public void imprimir(){
-        int x = coeficientes.size();
+        int x = 1;
         for(Float coeficiente: coeficientes){
-            System.out.print(coeficiente + "x" + x-- + " ");
+            System.out.print(coeficiente + "x" + x++ + " ");
         }
-        System.out.println("");
     }
 }
