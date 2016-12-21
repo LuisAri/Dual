@@ -16,6 +16,11 @@ public class Funcion {
     int cantidad;
     Vector<Float> coeficientes;
     
+    public Funcion(){
+        this.cantidad = 0;
+        this.coeficientes = new Vector();
+    }
+    
     public Funcion(int cantidad, Float[] coeficientes){
         this.cantidad = cantidad;
         this.coeficientes = new Vector(coeficientes);
@@ -43,7 +48,8 @@ public class Funcion {
     }
     
     public void imprimir(){
-        int x = 1;
+        System.out.print("Variables: " + cantidad + " - ");
+        int x = 1; 
         for(Float coeficiente: coeficientes){
             System.out.print(coeficiente + "x" + x++ + " ");
         }

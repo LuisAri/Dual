@@ -27,6 +27,14 @@ public class Restriccion extends Funcion{
         this.ladoDerecho = ladoDerecho;
     }
     
+    public Funcion estandar(){
+        if(signo == Signo.MAYOR_IGUAL){
+            return this.negativo();
+        }
+        
+        return this;
+    }
+    
     public void imprimir(){
         super.imprimir();
         System.out.println(" " + signo.name() + " " + ladoDerecho);

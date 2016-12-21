@@ -32,6 +32,20 @@ public class Restricciones {
         restricciones.remove(renglon);
     }
     
+    public List<Restriccion> getRestricciones(){
+        return restricciones;
+    }
+    
+    public int getVariables(){
+        int variables = 0;
+        
+        for(Restriccion restriccion: restricciones){
+            variables = variables > restriccion.cantidad ? variables: restriccion.cantidad;
+        }
+        
+        return variables;
+    }
+    
     public void imprimir(){
         System.out.println("Sujeto A");
         for(Restriccion restriccion : restricciones){
