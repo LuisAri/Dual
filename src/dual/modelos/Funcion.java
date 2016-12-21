@@ -13,24 +13,20 @@ public class Funcion {
     
     private static final int NEGATIVO = -1;
     
-    int cantidad;
     Vector<Float> coeficientes;
     
     public Funcion(){
-        this.cantidad = 0;
         this.coeficientes = new Vector();
     }
     
-    public Funcion(int cantidad, Float[] coeficientes){
-        this.cantidad = cantidad;
+    public Funcion(Float[] coeficientes){
         this.coeficientes = new Vector(coeficientes);
     }
     
-    public Funcion(int cantidad, float[] coeficientes){
-        this.cantidad = cantidad;
-        
+    public Funcion(float[] coeficientes){
         Float[] temporal = new Float[coeficientes.length];
-        for(int i = 0; i < cantidad; i++){
+        int tamano = coeficientes.length;
+        for(int i = 0; i < tamano; i++){
             temporal[i] = coeficientes[i];
         }
             
@@ -44,11 +40,14 @@ public class Funcion {
             negativos[i++] = (coeficiente * NEGATIVO);
         }
         
-        return new Funcion(cantidad, negativos);
+        return new Funcion(negativos);
+    }
+    
+    public int cantidad(){
+        return coeficientes.size();
     }
     
     public void imprimir(){
-        System.out.print("Variables: " + cantidad + " - ");
         int x = 1; 
         for(Float coeficiente: coeficientes){
             System.out.print(coeficiente + "x" + x++ + " ");

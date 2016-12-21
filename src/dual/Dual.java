@@ -27,10 +27,9 @@ public class Dual {
     }
     
     public static void testFuncion(){
-        int cantidad = 3;
         float[] coeficientes = new float[]{0.1f,2.2f,-3.0f};
         
-        Funcion prueba = new Funcion(cantidad, coeficientes);
+        Funcion prueba = new Funcion(coeficientes);
         prueba.imprimir();
         
         Funcion negativos = prueba.negativo();
@@ -38,26 +37,23 @@ public class Dual {
     }
     
     public static void testFuncionObjetivo(){
-        int cantidad = 2;
         float[] coeficientes = new float[]{0.2f,8.8f};
         
-        FuncionObjetivo prueba = new FuncionObjetivo(Caso.MAX, cantidad, coeficientes);
+        FuncionObjetivo prueba = new FuncionObjetivo(Caso.MAX, coeficientes);
         prueba.imprimir();
     }
     
     public static void testRestriccion(){
-        int cantidad = 2;
         float[] coeficientes = new float[]{20,80};
-        Restriccion restriccion = new Restriccion(Signo.MENOR_IGUAL, cantidad, coeficientes, 120);
+        Restriccion restriccion = new Restriccion(Signo.MENOR_IGUAL, coeficientes, 120);
         restriccion.imprimir();
     }
     
     public static void testRestricciones(){
-        int cantidad = 3;
-        Restricciones restricciones = new Restricciones(cantidad);
-        restricciones.agregarRestriccion(Signo.MENOR_IGUAL, 2, new float[]{1.1f,-50.5f}, 80);
-        restricciones.agregarRestriccion(Signo.MAYOR_IGUAL, 3, new float[]{12, -1.1f,-50.5f}, 120);
-        restricciones.agregarRestriccion(Signo.IGUAL, 1, new float[]{1.1f}, 10);
+        Restricciones restricciones = new Restricciones();
+        restricciones.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{1.1f,-50.5f}, 80);
+        restricciones.agregarRestriccion(Signo.MAYOR_IGUAL, new float[]{12, -1.1f,-50.5f}, 120);
+        restricciones.agregarRestriccion(Signo.IGUAL, new float[]{1.1f}, 10);
         restricciones.imprimir();
     }
 }

@@ -15,16 +15,18 @@ import java.util.List;
  */
 public class Restricciones {
     
-    private int cantidad;
     private List<Restriccion> restricciones;
     
-    public Restricciones(int cantidad){
-        this.cantidad = cantidad;
+    public Restricciones(){
         restricciones = new ArrayList();
     }
     
-    public void agregarRestriccion(Signo signo, int cantidad, float[] coeficientes, float ladoDerecho){
-        Restriccion nueva = new Restriccion(signo, cantidad, coeficientes, ladoDerecho);
+    public void agregarRestriccion(Signo signo, float[] coeficientes, float ladoDerecho){
+        Restriccion nueva = new Restriccion(signo, coeficientes, ladoDerecho);
+        restricciones.add(nueva);
+    }
+    
+    public void agregarRestriccion(Restriccion nueva){
         restricciones.add(nueva);
     }
     
@@ -40,10 +42,14 @@ public class Restricciones {
         int variables = 0;
         
         for(Restriccion restriccion: restricciones){
-            variables = variables > restriccion.cantidad ? variables: restriccion.cantidad;
+            variables = (variables > restriccion.cantidad()) ? variables: restriccion.cantidad();
         }
         
         return variables;
+    }
+    
+    public int getRenglones(){
+        return restricciones.size();
     }
     
     public void imprimir(){

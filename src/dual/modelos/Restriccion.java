@@ -20,8 +20,8 @@ public class Restriccion extends Funcion{
     private Signo signo;
     private float ladoDerecho;
     
-    public Restriccion(Signo signo, int cantidad, float[] coeficientes, float ladoDerecho){
-        super(cantidad, coeficientes);
+    public Restriccion(Signo signo, float[] coeficientes, float ladoDerecho){
+        super(coeficientes);
         
         this.signo = signo;
         this.ladoDerecho = ladoDerecho;

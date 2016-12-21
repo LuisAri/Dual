@@ -18,14 +18,14 @@ public class FuncionObjetivo extends Funcion{
     
     private Caso caso;
     
-    public FuncionObjetivo(Caso caso, int cantidad, Float[] coeficientes){
-        super(cantidad, coeficientes);
+    public FuncionObjetivo(Caso caso, Float[] coeficientes){
+        super(coeficientes);
         
         this.caso = caso;
     }
     
-    public FuncionObjetivo(Caso caso, int cantidad, float[] coeficientes){
-        super(cantidad, coeficientes);
+    public FuncionObjetivo(Caso caso, float[] coeficientes){
+        super(coeficientes);
         
         this.caso = caso;
     }
