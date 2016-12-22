@@ -37,7 +37,7 @@ public class Restriccion extends Funcion{
     
     public Funcion holguras(int holguras, int renglon){
         Float[] temporal = new Float[holguras];
-        temporal[renglon] = 1f;
+        temporal[renglon - 1] = 1f;
         return new Funcion(temporal);
     }
     

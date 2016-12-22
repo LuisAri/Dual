@@ -44,19 +44,20 @@ public class Tabloide {
     public void imprimir(){
         int i = 0;
         for(Renglon renglon: l_renglones){
-            System.out.print(i++ + " - " + renglon.esZ + " - ");
+            System.out.print(i++ + " | " + renglon.esZ + " \t| ");
             
             int x = 1; 
             for(Float coeficiente: renglon.coeficientes.coeficientes){
-                System.out.print(coeficiente + "x" + x++ + " ");
+                System.out.print(coeficiente + "x" + x++ + " \t");
             }
             
             x = 1;
             for(Float coeficiente: renglon.holguras.coeficientes){
-                System.out.print(coeficiente + "s" + x++ + " ");
+                System.out.print(coeficiente + "s" + x++ + " \t");
             }
             
             System.out.print(renglon.ladoDerecho);
+            System.out.println("");
         }
     }
     

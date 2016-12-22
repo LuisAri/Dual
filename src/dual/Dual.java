@@ -11,6 +11,7 @@ import dual.modelos.FuncionObjetivo.Caso;
 import dual.modelos.Restriccion;
 import dual.modelos.Restriccion.Signo;
 import dual.modelos.Restricciones;
+import dual.modelos.Tabloide;
 
 /**
  *
@@ -22,8 +23,7 @@ public class Dual {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        testRestricciones();
-        
+        testTabloide();
     }
     
     public static void testFuncion(){
@@ -55,5 +55,21 @@ public class Dual {
         restricciones.agregarRestriccion(Signo.MAYOR_IGUAL, new float[]{12, -1.1f,-50.5f}, 120);
         restricciones.agregarRestriccion(Signo.IGUAL, new float[]{1.1f}, 10);
         restricciones.imprimir();
+    }
+    
+    public static void testTabloide(){
+        System.out.println("[Funcion Objetivo]");
+        FuncionObjetivo objetivo = new FuncionObjetivo(Caso.MAX, new Float[]{10f, 6f});
+        objetivo.imprimir();
+        System.out.println("\n\n[Restricciones]");
+        
+        Restricciones restricciones = new Restricciones();
+        restricciones.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{1f,1f}, 90);
+        restricciones.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{20, 50f}, 3000);
+        restricciones.imprimir();
+        
+        System.out.println("\n\n[Tabloide]");
+        Tabloide tabla = new Tabloide(objetivo, restricciones);
+        tabla.imprimir();
     }
 }
