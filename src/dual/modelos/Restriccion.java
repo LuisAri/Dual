@@ -35,6 +35,16 @@ public class Restriccion extends Funcion{
         return this;
     }
     
+    public Funcion holguras(int holguras, int renglon){
+        Float[] temporal = new Float[holguras];
+        temporal[renglon] = 1f;
+        return new Funcion(temporal);
+    }
+    
+    public float getLadoDerechoEstandar(){
+        return (signo == Signo.MAYOR_IGUAL)? (ladoDerecho * NEGATIVO) : ladoDerecho;
+    }
+    
     public void imprimir(){
         super.imprimir();
         System.out.println(" " + signo.name() + " " + ladoDerecho);

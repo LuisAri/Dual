@@ -11,12 +11,18 @@ package dual.modelos;
  */
 public class Funcion {
     
-    private static final int NEGATIVO = -1;
+    protected static final int NEGATIVO = -1;
     
     Vector<Float> coeficientes;
     
-    public Funcion(){
-        this.coeficientes = new Vector();
+    public Funcion(int cantidad){
+        Float[] temporal = new Float[cantidad];
+        
+        for(int i = 0; i < cantidad; i++){
+            temporal[i] = 0f;
+        }
+        
+        this.coeficientes = new Vector(temporal);
     }
     
     public Funcion(Float[] coeficientes){
