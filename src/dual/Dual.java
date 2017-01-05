@@ -71,5 +71,8 @@ public class Dual {
         System.out.println("\n\n[Tabloide]");
         Tabloide tabla = new Tabloide(objetivo, restricciones);
         tabla.imprimir();
+        
+        System.out.println("\n\n[Renglon Pivote]");
+        System.out.println(tabla.getRenglonPivote());
     }
 }

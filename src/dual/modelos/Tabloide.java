@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class Tabloide {
     
+    public static final int PRIMER_RENGLON_RESTRICCION = 1;
+    
     private FuncionObjetivo objetivo;
     private Restricciones   restricciones;
     
@@ -80,5 +82,31 @@ public class Tabloide {
             this.holguras     = restriccion.holguras(holguras, renglon);
             this.ladoDerecho  = restriccion.getLadoDerechoEstandar();
         }
+        
+        public boolean esZ(){
+            return this.esZ;
+        }
+        
+        public float getLadoDerecho(){
+            return this.ladoDerecho;
+        }
+    }
+    
+    public int getRenglonPivote(){
+        int i_pivote = PRIMER_RENGLON_RESTRICCION;
+        Renglon r_pivote = l_renglones.get(i_pivote);
+        
+        for(int i = PRIMER_RENGLON_RESTRICCION + 1; i < l_renglones.size(); i++){
+            if(r_pivote.ladoDerecho > l_renglones.get(i).ladoDerecho){
+                r_pivote = l_renglones.get(i);
+                i_pivote = i;
+            }
+        }
+        
+        if(r_pivote.ladoDerecho >= 0){
+            i_pivote = -1;
+        }
+        
+        return i_pivote;
     }
 }
