@@ -64,7 +64,7 @@ public class Dual {
         System.out.println("\n\n[Restricciones]");
         
         Restricciones restricciones = new Restricciones();
-        restricciones.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{1f,1f}, 90);
+        restricciones.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{2f,3f}, -90);
         restricciones.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{20, 50f}, 3000);
         restricciones.imprimir();
         
@@ -74,5 +74,7 @@ public class Dual {
         
         System.out.println("\n\n[Renglon Pivote]");
         System.out.println(tabla.getRenglonPivote());
+        System.out.println("\n\n[Pivote]");
+        System.out.println(tabla.getPivote());
     }
 }
