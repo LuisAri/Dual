@@ -49,6 +49,34 @@ public class Funcion {
         return new Funcion(negativos);
     }
     
+    public Vector<Float> getCoeficientes(){
+        return coeficientes;
+    }
+    
+    public Funcion dividir(Funcion divisor){
+        int tamano = this.cantidad() > divisor.cantidad()? 
+                this.cantidad() : divisor.cantidad();
+        
+        float[] temporal = new float[tamano];
+        for(int i = 0; i < tamano; i++){
+            temporal[i] = 0;
+        }
+        
+        // Establecer el tamaño, asignar el array a cero, hacer la division,
+        
+        for(int i = 0; i < tamano; i++){
+            if(this.cantidad() < i || divisor.cantidad() < i){
+                temporal[i] = 0;
+            }else if(divisor.getCoeficientes().get(i) == 0){
+                temporal[i] = 0;
+            }else{
+                temporal[i] = this.coeficientes.get(i) / divisor.getCoeficientes().get(i);
+            }
+        }
+        
+        return new Funcion(temporal);
+    }
+    
     public int cantidad(){
         return coeficientes.size();
     }
