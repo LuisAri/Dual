@@ -87,6 +87,28 @@ public class Funcion {
         return true;
     }
     
+    public Funcion absoluto(){
+        float[] temporal = new float[this.cantidad()];
+        for(int i = 0; i < cantidad(); i++){
+            temporal[i] = coeficientes.get(i) < 0? 
+                    coeficientes.get(i) * NEGATIVO : coeficientes.get(i);
+        }
+        
+        return new Funcion(temporal);
+    }
+    
+    public int menor(){
+        int menor = 0;
+        
+        for(int i = 0; i < cantidad(); i++){
+            if(coeficientes.get(menor) > coeficientes.get(i)){
+                menor = i;
+            }
+        }
+        
+        return menor;
+    }
+    
     public int cantidad(){
         return coeficientes.size();
     }
