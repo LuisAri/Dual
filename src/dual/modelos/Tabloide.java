@@ -5,6 +5,7 @@
  */
 package dual.modelos;
 
+import dual.modelos.FuncionObjetivo.Caso;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,13 +84,78 @@ public class Tabloide {
             this.ladoDerecho  = restriccion.getLadoDerechoEstandar();
         }
         
+        public Renglon(boolean esZ, Funcion coeficientes, Funcion holguras, float ladoDerecho){
+            this.esZ = esZ;
+            this.coeficientes = coeficientes;
+            this.holguras = holguras;
+            this.ladoDerecho = ladoDerecho;
+        }
+        
         public boolean esZ(){
             return this.esZ;
+        }
+        
+        public Funcion getCoeficientes(){
+            return this.coeficientes;
+        }
+        
+        public Funcion getHolguras(){
+            return this.holguras;
         }
         
         public float getLadoDerecho(){
             return this.ladoDerecho;
         }
+        
+        public Renglon dividir(Renglon divisor){
+            boolean t_esZ = true;
+            Funcion t_coeficientes = coeficientes.dividir(divisor.getCoeficientes());
+            Funcion t_holguras = holguras.dividir(divisor.getHolguras());
+            float   t_ladoDerecho = this.ladoDerecho / divisor.getLadoDerecho();
+            
+            return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
+        }
+        
+        public MetaRenglon getMenor(Caso caso){
+            MetaRenglon temporal = new MetaRenglon();
+            temporal.esCoeficiente = true;
+            
+            if(caso == Caso.MIN){
+                temporal.posicion = coeficientes.menor();
+            }else{
+                temporal.posicion = coeficientes.absoluto().menor();
+            }
+            
+            return temporal;
+        }
+        
+        public boolean tieneNegativos(){
+            if(!coeficientes.tieneNegativos() && !holguras.tieneNegativos()){
+                return false;
+            }
+            
+            return true;
+        }
+        
+        public void imprimir(){
+            int x = 1; 
+            for(Float coeficiente: this.coeficientes.coeficientes){
+                System.out.print(coeficiente + "x" + x++ + " \t");
+            }
+            
+            x = 1;
+            for(Float coeficiente: this.holguras.coeficientes){
+                System.out.print(coeficiente + "s" + x++ + " \t");
+            }
+            
+            System.out.print(this.ladoDerecho);
+            System.out.println("");
+        }
+    }
+    
+    class MetaRenglon {
+        boolean esCoeficiente;
+        int  posicion;
     }
     
     public int getRenglonPivote(){
@@ -108,5 +174,25 @@ public class Tabloide {
         }
         
         return i_pivote;
+    }
+    
+    public int getPivote(){
+        if(this.getRenglonPivote() <= 0){
+            return -1;
+        }
+        
+        Renglon cero    = l_renglones.get(0);
+        Renglon pivote  = l_renglones.get(this.getRenglonPivote());
+        
+        if(!pivote.tieneNegativos()){
+            return -1;
+        }
+        
+        Renglon division  = cero.dividir(pivote);
+        System.out.print("[Division] \t");
+        division.imprimir();
+        MetaRenglon meta  = division.getMenor(Caso.MAX);
+        
+        return meta.posicion;
     }
 }
