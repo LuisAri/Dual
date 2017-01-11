@@ -178,6 +178,7 @@ public class Tabloide {
     
     public int getPivote(){
         if(this.getRenglonPivote() <= 0){
+            System.out.println("[Tabloide.getPivote()] No tiene renglon pivote");
             return -1;
         }
         
@@ -185,6 +186,7 @@ public class Tabloide {
         Renglon pivote  = l_renglones.get(this.getRenglonPivote());
         
         if(!pivote.tieneNegativos()){
+            System.out.println("[Tabloide.getPivote()] No tiene negativos");
             return -1;
         }
         
