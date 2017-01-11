@@ -77,6 +77,16 @@ public class Funcion {
         return new Funcion(temporal);
     }
     
+    public boolean tieneNegativos(){
+        for(Float f: coeficientes){
+            if(f >= 0){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     public int cantidad(){
         return coeficientes.size();
     }
