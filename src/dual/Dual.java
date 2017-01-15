@@ -76,5 +76,7 @@ public class Dual {
         System.out.println(tabla.getRenglonPivote());
         System.out.println("\n\n[Pivote]");
         System.out.println(tabla.getPivote());
+        
+        tabla.iterar(2);
     }
 }
