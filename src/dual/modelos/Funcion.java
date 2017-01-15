@@ -77,9 +77,40 @@ public class Funcion {
         return new Funcion(temporal);
     }
     
+    public Funcion dividir(float divisor){
+        int tamano = this.cantidad();
+        
+        float[] temporal = new float[tamano];
+        for(int i = 0; i < tamano; i++){
+            temporal[i] = 0;
+        }
+        
+        // Establecer el tamaño, asignar el array a cero, hacer la division,
+        
+        for(int i = 0; i < tamano; i++){
+            if(divisor == 0){
+                temporal[i] = 0;
+            }else{
+                temporal[i] = this.coeficientes.get(i) / divisor;
+            }
+        }
+        
+        return new Funcion(temporal);
+    }
+    
     public boolean tieneNegativos(){
         for(Float f: coeficientes){
             if(f >= 0){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public boolean tieneCeros(){
+        for(Float f: coeficientes){
+            if(f != 0){
                 return false;
             }
         }
@@ -105,7 +136,7 @@ public class Funcion {
                 menor = i;
             }
         }
-        
+        System.out.println(coeficientes.get(menor));
         return menor;
     }
     
