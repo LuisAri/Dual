@@ -167,15 +167,20 @@ public class Funcion {
         return new Funcion(temporal);
     }
     
-    public int menor(){
+    public int menor(boolean ignorarCero){
+        
         int menor = 0;
         
-        for(int i = 0; i < cantidad(); i++){
+        for(int i = menor + 1; i < cantidad(); i++){
             if(coeficientes.get(menor) > coeficientes.get(i)){
-                menor = i;
+                if(ignorarCero){
+                    menor = coeficientes.get(i) == 0? menor: i;
+                }else{
+                    menor = i;
+                }
             }
         }
-        System.out.println(coeficientes.get(menor));
+        
         return menor;
     }
     
