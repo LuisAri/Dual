@@ -93,6 +93,7 @@ public class Funcion {
                 temporal[i] = 0;
             }else{
                 temporal[i] = this.coeficientes.get(i) + funcion.getCoeficientes().get(i);
+                //System.out.println(this.coeficientes.get(i) +" + " + funcion.getCoeficientes().get(i) + " = " + temporal[i]);
             }
         }
         
@@ -170,6 +171,14 @@ public class Funcion {
     public int menor(boolean ignorarCero){
         
         int menor = 0;
+        if(ignorarCero){
+            while(coeficientes.get(menor) == 0 && menor < cantidad()){
+                menor++;
+            }
+            if(coeficientes.get(menor) == 0){
+                System.out.println("[Funcion.menor()] Todos los valores de la funcion son cero");
+            }
+        }
         
         for(int i = menor + 1; i < cantidad(); i++){
             if(coeficientes.get(menor) > coeficientes.get(i)){
