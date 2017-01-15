@@ -77,6 +77,45 @@ public class Funcion {
         return new Funcion(temporal);
     }
     
+    public Funcion sumar(Funcion funcion){
+        int tamano = this.cantidad() > funcion.cantidad()? 
+                this.cantidad() : funcion.cantidad();
+        
+        float[] temporal = new float[tamano];
+        for(int i = 0; i < tamano; i++){
+            temporal[i] = 0;
+        }
+        
+        // Establecer el tamaño, asignar el array a cero, hacer la division,
+        
+        for(int i = 0; i < tamano; i++){
+            if(this.cantidad() < i || funcion.cantidad() < i){
+                temporal[i] = 0;
+            }else{
+                temporal[i] = this.coeficientes.get(i) + funcion.getCoeficientes().get(i);
+            }
+        }
+        
+        return new Funcion(temporal);
+    }
+    
+    public Funcion multiplicar(float valor){
+        int tamano = this.cantidad();
+        
+        float[] temporal = new float[tamano];
+        for(int i = 0; i < tamano; i++){
+            temporal[i] = 0;
+        }
+        
+        // Establecer el tamaño, asignar el array a cero, hacer la multiplicacion,
+        
+        for(int i = 0; i < tamano; i++){
+            temporal[i] = this.coeficientes.get(i) * valor;
+        }
+        
+        return new Funcion(temporal);
+    }
+    
     public Funcion dividir(float divisor){
         int tamano = this.cantidad();
         
