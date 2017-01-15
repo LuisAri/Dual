@@ -104,6 +104,24 @@ public class Tabloide {
             return false;
         }
         
+        public Renglon sumar(Renglon renglon){
+            boolean t_esZ = false;
+            Funcion t_coeficientes = coeficientes.sumar(renglon.getCoeficientes());
+            Funcion t_holguras = holguras.sumar(renglon.getHolguras());
+            float   t_ladoDerecho = this.ladoDerecho + renglon.getLadoDerecho();
+            
+            return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
+        }
+        
+        public Renglon multiplicar(float valor){
+            boolean t_esZ = false;
+            Funcion t_coeficientes = coeficientes.multiplicar(valor);
+            Funcion t_holguras = holguras.multiplicar(valor);
+            float   t_ladoDerecho = this.ladoDerecho * valor;
+            
+            return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
+        }
+        
         public Renglon dividir(float divisor){
             boolean t_esZ = false;
             Funcion t_coeficientes = coeficientes.dividir(divisor);
@@ -156,6 +174,10 @@ public class Tabloide {
         int  posicion;
     }
     
+    public void set(int posicion, Renglon renglon){
+        l_renglones.set(posicion, renglon);
+    }
+    
     public int getRenglonPivote(){
         int i_pivote = PRIMER_RENGLON_RESTRICCION;
         Renglon r_pivote = l_renglones.get(i_pivote);
@@ -189,7 +211,7 @@ public class Tabloide {
         }
         
         Renglon division  = cero.dividir(pivote);
-        System.out.print("[Division] \t");
+        System.out.print("[getPivote() - Division] \t");
         division.imprimir();
         MetaRenglon meta  = division.getMenor(Caso.MAX);
         
@@ -215,17 +237,24 @@ public class Tabloide {
             
             System.out.println("[Tabloide.iterar() - Valor pivote] " + v_pivote);
             Renglon division = tabloide.dividir(r_pivote, v_pivote);
-            System.out.println("Division con valor " + v_pivote);division.imprimir();
             l_renglones.set(r_pivote, division);
             
             for(int j = 0; j < l_renglones.size(); j++){
                 if(j != r_pivote){
                     float v_columna_pivote = tabloide.getValor(j, c_pivote);
+                    Renglon multiplicacion;
                     if(v_columna_pivote > 0){
-                        Renglon multiplicacion = division.multiplicar(v_columna_pivote * NEGATIVO);
+                        multiplicacion = division.multiplicar(v_columna_pivote * NEGATIVO);
+                    }else{
+                        multiplicacion = division.multiplicar(v_columna_pivote);
                     }
+                    
+                    Renglon suma = l_renglones.get(j).sumar(multiplicacion);
+                    l_renglones.set(j, suma);
                 }
             }
+            
+            tabloide.imprimir();
         }
         
         return tabloide;
