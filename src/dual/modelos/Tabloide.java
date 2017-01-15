@@ -5,6 +5,7 @@
  */
 package dual.modelos;
 
+import static dual.modelos.Funcion.NEGATIVO;
 import dual.modelos.FuncionObjetivo.Caso;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,26 +42,6 @@ public class Tabloide {
         int i = 1;
         for(Restriccion restriccion : restricciones.getRestricciones()){
             l_renglones.add(new Renglon(i++, variables, holguras, restriccion));
-        }
-    }
-    
-    public void imprimir(){
-        int i = 0;
-        for(Renglon renglon: l_renglones){
-            System.out.print(i++ + " | " + renglon.esZ + " \t| ");
-            
-            int x = 1; 
-            for(Float coeficiente: renglon.coeficientes.coeficientes){
-                System.out.print(coeficiente + "x" + x++ + " \t");
-            }
-            
-            x = 1;
-            for(Float coeficiente: renglon.holguras.coeficientes){
-                System.out.print(coeficiente + "s" + x++ + " \t");
-            }
-            
-            System.out.print(renglon.ladoDerecho);
-            System.out.println("");
         }
     }
     
@@ -107,6 +88,31 @@ public class Tabloide {
             return this.ladoDerecho;
         }
         
+        public boolean tieneNegativos(){
+            if(!coeficientes.tieneNegativos() && !holguras.tieneNegativos()){
+                return false;
+            }
+            
+            return true;
+        }
+        
+        public boolean tieneCeros(){
+            if(coeficientes.tieneCeros() && holguras.tieneCeros()){
+                return true;
+            }
+
+            return false;
+        }
+        
+        public Renglon dividir(float divisor){
+            boolean t_esZ = false;
+            Funcion t_coeficientes = coeficientes.dividir(divisor);
+            Funcion t_holguras = holguras.dividir(divisor);
+            float   t_ladoDerecho = this.ladoDerecho / divisor;
+            
+            return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
+        }
+        
         public Renglon dividir(Renglon divisor){
             boolean t_esZ = true;
             Funcion t_coeficientes = coeficientes.dividir(divisor.getCoeficientes());
@@ -127,14 +133,6 @@ public class Tabloide {
             }
             
             return temporal;
-        }
-        
-        public boolean tieneNegativos(){
-            if(!coeficientes.tieneNegativos() && !holguras.tieneNegativos()){
-                return false;
-            }
-            
-            return true;
         }
         
         public void imprimir(){
@@ -185,8 +183,8 @@ public class Tabloide {
         Renglon cero    = l_renglones.get(0);
         Renglon pivote  = l_renglones.get(this.getRenglonPivote());
         
-        if(!pivote.tieneNegativos()){
-            System.out.println("[Tabloide.getPivote()] No tiene negativos");
+        if(pivote.tieneCeros()){
+            System.out.println("[Tabloide.getPivote()] Todos los denominadores son cero");
             return -1;
         }
         
@@ -196,5 +194,60 @@ public class Tabloide {
         MetaRenglon meta  = division.getMenor(Caso.MAX);
         
         return meta.posicion;
+    }
+    
+    public float getValor(int renglon, int columna){
+        Renglon pivote = l_renglones.get(renglon);
+        return pivote.getCoeficientes().getCoeficientes().get(columna);
+    }
+    
+    public Renglon dividir(int renglon, float valor){
+        return l_renglones.get(renglon).dividir(valor);
+    }
+    
+    public Tabloide iterar(int iteraciones){ // Agregar variable debug
+        Tabloide tabloide = new Tabloide(this.objetivo, this.restricciones);
+        
+        for(int i = 0; i < iteraciones; i++){
+            int r_pivote = tabloide.getRenglonPivote();
+            int c_pivote = tabloide.getPivote();
+            float v_pivote = tabloide.getValor(r_pivote, c_pivote);
+            
+            System.out.println("[Tabloide.iterar() - Valor pivote] " + v_pivote);
+            Renglon division = tabloide.dividir(r_pivote, v_pivote);
+            System.out.println("Division con valor " + v_pivote);division.imprimir();
+            l_renglones.set(r_pivote, division);
+            
+            for(int j = 0; j < l_renglones.size(); j++){
+                if(j != r_pivote){
+                    float v_columna_pivote = tabloide.getValor(j, c_pivote);
+                    if(v_columna_pivote > 0){
+                        Renglon multiplicacion = division.multiplicar(v_columna_pivote * NEGATIVO);
+                    }
+                }
+            }
+        }
+        
+        return tabloide;
+    }
+    
+    public void imprimir(){
+        int i = 0;
+        for(Renglon renglon: l_renglones){
+            System.out.print(i++ + " | " + renglon.esZ + " \t| ");
+            
+            int x = 1; 
+            for(Float coeficiente: renglon.coeficientes.coeficientes){
+                System.out.print(coeficiente + "x" + x++ + " \t");
+            }
+            
+            x = 1;
+            for(Float coeficiente: renglon.holguras.coeficientes){
+                System.out.print(coeficiente + "s" + x++ + " \t");
+            }
+            
+            System.out.print(renglon.ladoDerecho);
+            System.out.println("");
+        }
     }
 }
