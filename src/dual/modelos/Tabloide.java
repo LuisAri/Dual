@@ -109,7 +109,7 @@ public class Tabloide {
             Funcion t_coeficientes = coeficientes.sumar(renglon.getCoeficientes());
             Funcion t_holguras = holguras.sumar(renglon.getHolguras());
             float   t_ladoDerecho = this.ladoDerecho + renglon.getLadoDerecho();
-            
+            System.out.println("Lado derecho: " + this.ladoDerecho + "  +  " + renglon.getLadoDerecho());
             return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
         }
         
@@ -276,7 +276,7 @@ public class Tabloide {
                 System.out.print(coeficiente + "s" + x++ + " \t");
             }
             
-            System.out.print(renglon.ladoDerecho);
+            System.out.printf("%.5f", renglon.ladoDerecho);
             System.out.println("");
         }
     }
