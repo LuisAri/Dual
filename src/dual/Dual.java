@@ -5,6 +5,7 @@
  */
 package dual;
 
+import dual.vistas.MainView;
 import dual.modelos.Funcion;
 import dual.modelos.FuncionObjetivo;
 import dual.modelos.FuncionObjetivo.Caso;
@@ -23,7 +24,7 @@ public class Dual {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        testTabloide3();
+        new MainView();
     }
     
     public static void testFuncion(){
