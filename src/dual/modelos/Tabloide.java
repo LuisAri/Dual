@@ -174,6 +174,16 @@ public class Tabloide {
         int  posicion;
     }
     
+    public boolean esOptima(){
+        for(Renglon r : l_renglones){
+            if(r.getLadoDerecho() < 0){
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     public void set(int posicion, Renglon renglon){
         l_renglones.set(posicion, renglon);
     }
@@ -206,7 +216,7 @@ public class Tabloide {
         Renglon pivote  = l_renglones.get(this.getRenglonPivote());
         
         if(pivote.tieneCeros()){
-            System.out.println("[Tabloide.getPivote()] Todos los denominadores son cero");
+            System.out.println("[Tabloide.getPivote()] Todos los denominadores son cero, no es factible");
             return -1;
         }
         
@@ -231,6 +241,10 @@ public class Tabloide {
         Tabloide tabloide = new Tabloide(this.objetivo, this.restricciones);
         
         for(int i = 0; i < iteraciones; i++){
+            if(tabloide.esOptima()){
+                System.out.println("[Tabloide.iterar()] La tabla es optima, posee una solucion basica factible");
+            }
+            
             int r_pivote = tabloide.getRenglonPivote();
             int c_pivote = tabloide.getPivote();
             float v_pivote = tabloide.getValor(r_pivote, c_pivote);
