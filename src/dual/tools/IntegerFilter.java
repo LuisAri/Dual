@@ -30,8 +30,8 @@ public class IntegerFilter extends DocumentFilter {
         if (test(sb.toString())) {
             super.insertString(fb, offset, string, attr);
         } else {
-            JOptionPane.showMessageDialog(null, 
-                "Valor de entrada invalido, ingrese solo numeros positivos.", "Error", JOptionPane.ERROR_MESSAGE);
+//             JOptionPane.showMessageDialog(null, 
+//                "Valor de entrada invalido, ingrese solo numeros positivos.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -39,6 +39,8 @@ public class IntegerFilter extends DocumentFilter {
         try {
             if(text.contains("-")){
                 throw new NumberFormatException();
+            }else if(text.equals("")){
+                text = "0";
             }
             Integer.parseInt(text);
             return true;
@@ -59,8 +61,7 @@ public class IntegerFilter extends DocumentFilter {
        if (test(sb.toString())) {
           super.replace(fb, offset, length, text, attrs);
        } else {
-          JOptionPane.showMessageDialog(null, 
-                "Valor de entrada invalido, ingrese solo numeros positivos.", "Error", JOptionPane.ERROR_MESSAGE);
+          
        }
 
     }
@@ -76,8 +77,7 @@ public class IntegerFilter extends DocumentFilter {
        if (test(sb.toString())) {
           super.remove(fb, offset, length);
        } else {
-          JOptionPane.showMessageDialog(null, 
-                "Valor de entrada invalido, ingrese solo numeros positivos.", "Error", JOptionPane.ERROR_MESSAGE);
+         
        }
     }
 }
