@@ -38,9 +38,12 @@ public class Dual {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        /*
         MainView ventana = new MainView();
         ventana.setLocationRelativeTo(null);
-        ventana.setVisible(true);
+        ventana.setVisible(true); // */
+        
+        testTabloide3();
     }
     
     public static void testFuncion(){
@@ -143,6 +146,9 @@ public class Dual {
         System.out.println(tabla.getPivote());
         
         System.out.println("\n\n[Iteracion]");
-        tabla.iterar(2);
+        Tabloide optima = tabla.iterar(5);
+        
+        System.out.println("\n\n[Optima]");
+        optima.imprimir();
     }
 }
