@@ -131,6 +131,7 @@ public class JTableRowHeader {
         frame.setVisible(true);
     }
 
+    /*
     public static void main(String[] args) {
         try {// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -150,4 +151,5 @@ public class JTableRowHeader {
             }
         });
     }
+    */
 }
