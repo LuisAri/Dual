@@ -30,7 +30,7 @@ import dual.modelos.Tabloide;
  *  - Agregar acerca de
  *  - Hacer pruebas unitarias
  * 
- * @author rexim de venezuela
+ * @author Hector
  */
 public class Dual {
 
