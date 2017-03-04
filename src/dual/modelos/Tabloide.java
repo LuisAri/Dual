@@ -194,6 +194,7 @@ public class Tabloide {
             // Valido si el tabloide es optimo
             if(tabloide.esOptima()){
                 System.out.println("[Tabloide.iterar()] La tabla es optima, posee una solucion basica factible");
+                return tabloide;
             }
             
             // Obtengo el valor pivote
@@ -236,8 +237,8 @@ public class Tabloide {
      * @return 
      */
     public boolean esOptima(){
-        for(Renglon r : l_renglones){
-            if(r.getLadoDerecho() < 0){
+        for(int i = PRIMER_RENGLON_RESTRICCION; i < this.renglones; i++){
+            if(l_renglones.get(i).getLadoDerecho() < 0){
                 return false;
             }
         }
