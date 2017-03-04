@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dual.tools;
+package dual.vistas.tools;
 
 import javax.swing.JOptionPane;
 import javax.swing.text.AttributeSet;
@@ -39,8 +39,6 @@ public class IntegerFilter extends DocumentFilter {
         try {
             if(text.contains("-")){
                 throw new NumberFormatException();
-            }else if(text.equals("")){
-                text = "0";
             }
             Integer.parseInt(text);
             return true;

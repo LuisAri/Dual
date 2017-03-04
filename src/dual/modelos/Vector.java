@@ -8,15 +8,24 @@ package dual.modelos;
 import java.util.ArrayList;
 
 /**
- *
- * @author rexim de venezuela
+ * Clase utilizada para reimplementar la clase ArrayList con valores cualquiera.
+ * 
+ * @see dual.modelos.Funcion
+ * @author Hector
  */
 public class Vector<E> extends ArrayList<E>{
     
+    /**
+     * Constructor para inicializar vector sin ningun elemento.
+     */
     public Vector(){
         super();
     }
     
+    /**
+     * Constructor para inicializar el vector con un array de objetos
+     * @param array Array de objetos a ingresar
+     */
     public Vector(E array[]){
         for(int i = 0; i < array.length; i++){
             this.add(array[i]);

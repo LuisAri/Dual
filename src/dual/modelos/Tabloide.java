@@ -11,169 +11,230 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * Clase que representa el tabloide simplex dual.
+ * 
+ * 
  * @author Hector
  */
 public class Tabloide {
-    
+   
+    /**
+     * Constante que indica que la posicion del primer renglon de la restriccion,
+     * esto se hace debido a que la posicion 0 en la lista de renglones
+     * posee la funcion objetivo.
+     */
     public static final int PRIMER_RENGLON_RESTRICCION = 1;
     
+    /**
+     * Funcion objetivo del sistema de ecuaciones
+     */
     private FuncionObjetivo objetivo;
+    
+    /**
+     * Conjunto de restricciones del sistema de ecuaciones
+     */
     private Restricciones   restricciones;
     
-    // Metadatos
+    // Metadatos (informacion especifica del tabloide)
+    
+    /**
+     * Cantidad de renglones que posee el tabloide
+     */
     private int renglones;
+    
+    /**
+     * Maxima cantidad de variables que posee el tabloide
+     */
     private int variables;
+    
+    /**
+     * Maxima cantidad de variables de holgura que posee el tabloide
+     */
     private int holguras;
     
-    // Lista de renglones
-    List<Renglon> l_renglones;
+    /**
+     * Lista de renglones en el tabloide
+     */
+    private List<Renglon> l_renglones;
     
+    /**
+     * Constructor inicial del tabloide, obtiene los metadatos del tabloide en
+     * funcion de la funcion objetivo y el conjunto de restricciones, luego crea
+     * y rellena los campos del tabloide.
+     * 
+     * @param objetivo
+     * @param restricciones 
+     */
     public Tabloide(FuncionObjetivo objetivo, Restricciones restricciones){
+        // Asignando funcion objetivo y restricciones
         this.objetivo = objetivo;
         this.restricciones = restricciones;
-        
+        /* Obteniendo cantidad de variables, renglones y variables de holguras
+           a colocar en el array */
         this.variables = objetivo.cantidad();
         this.renglones = restricciones.getRenglones() + 1;
         this.holguras  = restricciones.getRenglones();
-        
+        // Creando el array dinamico
         l_renglones = new ArrayList();
+        // Agregando la funcion objetivo al primer renglon del tabloide
         l_renglones.add(new Renglon(variables, holguras, objetivo));
-        int i = 1;
+        // Agregando el conjunto de restricciones al tabloide
+        int i = PRIMER_RENGLON_RESTRICCION; 
         for(Restriccion restriccion : restricciones.getRestricciones()){
             l_renglones.add(new Renglon(i++, variables, holguras, restriccion));
         }
     }
     
-    class Renglon {
-        boolean esZ;
-        Funcion coeficientes;
-        Funcion holguras;
-        float ladoDerecho;
-        
-        public Renglon(int variables, int holguras, FuncionObjetivo objetivo){
-            this.esZ            = true;
-            this.coeficientes   = objetivo.negativo();
-            this.holguras       = new Funcion(holguras);
-            this.ladoDerecho    = 0;
-        }
-        
-        public Renglon(int renglon, int variables, int holguras, Restriccion restriccion){
-            this.esZ          = false;
-            this.coeficientes = restriccion.estandar();
-            this.holguras     = restriccion.holguras(holguras, renglon);
-            this.ladoDerecho  = restriccion.getLadoDerechoEstandar();
-        }
-        
-        public Renglon(boolean esZ, Funcion coeficientes, Funcion holguras, float ladoDerecho){
-            this.esZ = esZ;
-            this.coeficientes = coeficientes;
-            this.holguras = holguras;
-            this.ladoDerecho = ladoDerecho;
-        }
-        
-        public boolean esZ(){
-            return this.esZ;
-        }
-        
-        public Funcion getCoeficientes(){
-            return this.coeficientes;
-        }
-        
-        public Funcion getHolguras(){
-            return this.holguras;
-        }
-        
-        public float getLadoDerecho(){
-            return this.ladoDerecho;
-        }
-        
-        public boolean tieneNegativos(){
-            if(!coeficientes.tieneNegativos() && !holguras.tieneNegativos()){
-                return false;
-            }
-            
-            return true;
-        }
-        
-        public boolean tieneCeros(){
-            if(coeficientes.tieneCeros() && holguras.tieneCeros()){
-                return true;
-            }
-
-            return false;
-        }
-        
-        public Renglon sumar(Renglon renglon){
-            boolean t_esZ = false;
-            Funcion t_coeficientes = coeficientes.sumar(renglon.getCoeficientes());
-            Funcion t_holguras = holguras.sumar(renglon.getHolguras());
-            float   t_ladoDerecho = this.ladoDerecho + renglon.getLadoDerecho();
-            //System.out.println("Lado derecho: " + this.ladoDerecho + "  +  " + renglon.getLadoDerecho());
-            return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
-        }
-        
-        public Renglon multiplicar(float valor){
-            boolean t_esZ = false;
-            Funcion t_coeficientes = coeficientes.multiplicar(valor);
-            Funcion t_holguras = holguras.multiplicar(valor);
-            float   t_ladoDerecho = this.ladoDerecho * valor;
-            
-            return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
-        }
-        
-        public Renglon dividir(float divisor){
-            boolean t_esZ = false;
-            Funcion t_coeficientes = coeficientes.dividir(divisor);
-            Funcion t_holguras = holguras.dividir(divisor);
-            float   t_ladoDerecho = this.ladoDerecho / divisor;
-            
-            return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
-        }
-        
-        public Renglon dividir(Renglon divisor){
-            boolean t_esZ = true;
-            Funcion t_coeficientes = coeficientes.dividir(divisor.getCoeficientes());
-            Funcion t_holguras = holguras.dividir(divisor.getHolguras());
-            float   t_ladoDerecho = this.ladoDerecho / divisor.getLadoDerecho();
-            
-            return new Renglon(t_esZ, t_coeficientes, t_holguras, t_ladoDerecho);
-        }
-        
-        public MetaRenglon getMenor(Caso caso){
-            MetaRenglon temporal = new MetaRenglon();
-            temporal.esCoeficiente = true;
-            
-            if(caso == Caso.MIN){
-                temporal.posicion = coeficientes.menor(true);
-            }else{
-                temporal.posicion = coeficientes.absoluto().menor(true);
-            }
-            
-            return temporal;
-        }
-        
-        public void imprimir(){
-            int x = 1; 
-            for(Float coeficiente: this.coeficientes.coeficientes){
-                System.out.print(coeficiente + "x" + x++ + " \t");
-            }
-            
-            x = 1;
-            for(Float coeficiente: this.holguras.coeficientes){
-                System.out.print(coeficiente + "s" + x++ + " \t");
-            }
-            
-            System.out.print(this.ladoDerecho);
-            System.out.println("");
-        }
+    /**
+     * Asigna un nuevo renglon en una posicion especifica del tabloide.
+     * 
+     * @param posicion
+     * @param renglon 
+     */
+    public void set(int posicion, Renglon renglon){
+        l_renglones.set(posicion, renglon);
     }
     
-    class MetaRenglon {
-        boolean esCoeficiente;
-        int  posicion;
+    /**
+     * Retorna la posicion del renglon pivote en el tabloide.
+     * 
+     * @return 
+     */
+    public int getRenglonPivote(){
+        // Obtiene el primer renglon restriccion del tabloide.
+        int i_pivote = PRIMER_RENGLON_RESTRICCION;
+        Renglon r_pivote = l_renglones.get(i_pivote);
+        
+        /* Va recorriendo cada renglon restriccion distinto al primero
+           y compara el lado derecho de cada renglon hasta encontrar el 
+           menor valor negativo. */
+        for(int i = PRIMER_RENGLON_RESTRICCION + 1; i < l_renglones.size(); i++){
+            if(r_pivote.ladoDerecho > l_renglones.get(i).ladoDerecho){
+                r_pivote = l_renglones.get(i);
+                i_pivote = i;
+            }
+        }
+        
+        // En caso de no haber lado derecho negativo, retorno un valor de error.
+        if(r_pivote.ladoDerecho >= 0){
+            i_pivote = -1;
+        }
+        
+        return i_pivote;
     }
     
+    /**
+     * Retorna la columna pivote.
+     * @return 
+     */
+    public int getPivote(){
+        // Verifica si el renglon pivote es menor o igual a 0
+        if(this.getRenglonPivote() <= 0){
+            System.out.println("[Tabloide.getPivote()] No tiene renglon pivote");
+            return -1;
+        }
+        
+        // Asigno el renglon cero y el pivote
+        Renglon cero    = l_renglones.get(0);
+        Renglon pivote  = l_renglones.get(this.getRenglonPivote());
+        
+        // Verifica si todos los elementos del renglon pivote valen cero.
+        if(pivote.tieneCeros()){
+            System.out.println("[Tabloide.getPivote()] Todos los denominadores son cero, no es factible");
+            return -1;
+        }
+        
+        // Divide el renglon de la funcion objetivo entre el renglon pivote.
+        Renglon division  = cero.dividir(pivote);
+        
+        // Obtiene la posicion del menor elemento de los coeficientes del renglon.
+        MetaRenglon meta  = division.getMenor(Caso.MAX);
+        
+        return meta.getPosicion();
+    }
+    
+    /**
+     * Obtiene el valor de una posicion x,y especifica del tabloide.
+     * @param renglon posicion x del tabloide.
+     * @param columna posicion y del tabloide.
+     * @return 
+     */
+    public float getValor(int renglon, int columna){
+        Renglon pivote = l_renglones.get(renglon);
+        return pivote.getCoeficientes().getCoeficientes().get(columna);
+    }
+    
+    /**
+     * Realiza la division escalar de un renglon especifico del tabloide por un
+     * valor escalar.
+     * 
+     * @param renglon
+     * @param valor
+     * @return 
+     */
+    public Renglon dividir(int renglon, float valor){
+        return l_renglones.get(renglon).dividir(valor);
+    }
+    
+    /**
+     * Realiza los calculos del tabloide simplex hasta el numero de iteraciones
+     * indicadas o  hasta que se encuentre una solucion infactible o solucion
+     * optima.
+     * 
+     * @param iteraciones
+     * @return 
+     */
+    public Tabloide iterar(int iteraciones){ 
+        // Creo un tabloide temporal
+        Tabloide tabloide = new Tabloide(this.objetivo, this.restricciones);
+        
+        // Realizo un ciclo hasta el numero de iteraciones o hasta conseguir una solucion optima
+        for(int i = 0; (i < iteraciones && !tabloide.esOptima()); i++){
+            
+            // Valido si el tabloide es optimo
+            if(tabloide.esOptima()){
+                System.out.println("[Tabloide.iterar()] La tabla es optima, posee una solucion basica factible");
+            }
+            
+            // Obtengo el valor pivote
+            int r_pivote = tabloide.getRenglonPivote();
+            int c_pivote = tabloide.getPivote();
+            float v_pivote = tabloide.getValor(r_pivote, c_pivote);
+            
+            // Obtengo la division escalar entre el renglon pivote y el valor pivote
+            Renglon division = tabloide.dividir(r_pivote, v_pivote);
+            // Lo reasigno en la posicion del renglon pivote
+            tabloide.set(r_pivote, division);
+            
+            // Recorro cada renglon del tabloide, incluyendo el de la funcion objetivo.
+            for(int j = 0; j < l_renglones.size(); j++){
+                // Valido si el renglon no es que contiene el pivote.
+                if(j != r_pivote){
+                    // De no ser renglon pivote, obtengo el valor de ese renglon con la columna pivote.
+                    float v_columna_pivote = tabloide.getValor(j, c_pivote);
+                    // Realizo la multiplicacion escalar de la division y el valor negativo.
+                    Renglon multiplicacion = division.multiplicar(v_columna_pivote * NEGATIVO);
+                    // Hago la suma entre el renglon actual y el renglon multiplicado.
+                    Renglon suma = tabloide.l_renglones.get(j).sumar(multiplicacion);
+                    // Lo asigno a esa misma posicion.
+                    tabloide.set(j, suma);
+                }
+            }
+            
+            // Indico la iteracion e imprimo el tabloide.
+            System.out.println("\n[Iteracion " + i + "]");
+            tabloide.imprimir();
+        }
+        
+        return tabloide;
+    }
+    
+    /**
+     * Indica si el tabloide es optimo. La condicion para que un tabloide sea
+     * optimo es si todos los lado derecho de los renglones son positivos.
+     * 
+     * @return 
+     */
     public boolean esOptima(){
         for(Renglon r : l_renglones){
             if(r.getLadoDerecho() < 0){
@@ -184,97 +245,10 @@ public class Tabloide {
         return true;
     }
     
-    public void set(int posicion, Renglon renglon){
-        l_renglones.set(posicion, renglon);
-    }
-    
-    public int getRenglonPivote(){
-        int i_pivote = PRIMER_RENGLON_RESTRICCION;
-        Renglon r_pivote = l_renglones.get(i_pivote);
-        
-        for(int i = PRIMER_RENGLON_RESTRICCION + 1; i < l_renglones.size(); i++){
-            if(r_pivote.ladoDerecho > l_renglones.get(i).ladoDerecho){
-                r_pivote = l_renglones.get(i);
-                i_pivote = i;
-            }
-        }
-        
-        if(r_pivote.ladoDerecho >= 0){
-            i_pivote = -1;
-        }
-        
-        return i_pivote;
-    }
-    
-    public int getPivote(){
-        if(this.getRenglonPivote() <= 0){
-            System.out.println("[Tabloide.getPivote()] No tiene renglon pivote");
-            return -1;
-        }
-        
-        Renglon cero    = l_renglones.get(0);
-        Renglon pivote  = l_renglones.get(this.getRenglonPivote());
-        
-        if(pivote.tieneCeros()){
-            System.out.println("[Tabloide.getPivote()] Todos los denominadores son cero, no es factible");
-            return -1;
-        }
-        
-        Renglon division  = cero.dividir(pivote);
-        //System.out.print("[getPivote() - Division] \t");
-        // division.imprimir();
-        MetaRenglon meta  = division.getMenor(Caso.MAX);
-        
-        return meta.posicion;
-    }
-    
-    public float getValor(int renglon, int columna){
-        Renglon pivote = l_renglones.get(renglon);
-        return pivote.getCoeficientes().getCoeficientes().get(columna);
-    }
-    
-    public Renglon dividir(int renglon, float valor){
-        return l_renglones.get(renglon).dividir(valor);
-    }
-    
-    public Tabloide iterar(int iteraciones){ // Agregar variable debug
-        Tabloide tabloide = new Tabloide(this.objetivo, this.restricciones);
-        
-        for(int i = 0; i < iteraciones; i++){
-            if(tabloide.esOptima()){
-                System.out.println("[Tabloide.iterar()] La tabla es optima, posee una solucion basica factible");
-            }
-            
-            int r_pivote = tabloide.getRenglonPivote();
-            int c_pivote = tabloide.getPivote();
-            float v_pivote = tabloide.getValor(r_pivote, c_pivote);
-            System.out.println(r_pivote + " - " + c_pivote + " = " + v_pivote);
-            //System.out.println([Tabloide.iterar() - Valor pivote] v_pivote);
-            Renglon division = tabloide.dividir(r_pivote, v_pivote);
-            tabloide.set(r_pivote, division);
-            
-            for(int j = 0; j < l_renglones.size(); j++){
-                if(j != r_pivote){
-                    float v_columna_pivote = tabloide.getValor(j, c_pivote);
-                    Renglon multiplicacion;
-                    
-                    multiplicacion = division.multiplicar(v_columna_pivote * NEGATIVO);
-                    
-                    //multiplicacion.imprimir();
-                    Renglon suma = tabloide.l_renglones.get(j).sumar(multiplicacion);
-                    //System.out.println("Sumar");
-                    //suma.imprimir();System.out.println("");
-                    tabloide.set(j, suma);
-                }
-            }
-            
-            System.out.println("\n[Iteracion " + i + "]");
-            tabloide.imprimir();
-        }
-        
-        return tabloide;
-    }
-    
+    /**
+     * Imprimo el tabloide, esto incluye todos los coeficientes, variables de holguras
+     * y lado derecho de cada renglon.
+     */
     public void imprimir(){
         int i = 0;
         for(Renglon renglon: l_renglones){

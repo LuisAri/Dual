@@ -5,14 +5,12 @@
  */
 package dual.vistas;
 
-import dual.modelos.*;
-import dual.tools.TableTools;
+import dual.modelos.FuncionObjetivo;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.text.PlainDocument;
 
 /**
  *
@@ -20,17 +18,26 @@ import javax.swing.table.TableColumn;
  */
 public class MainView extends javax.swing.JFrame {
 
-    FuncionObjetivo objetivo; 
-    
     /**
-     * Creates new form MainView
+     * Inicializa la ventana, inicia los validadores de inputs, componentes,
+     * posicion y visibilidad de la ventana.
      */
     public MainView() {
         initComponents();
-        setLocationRelativeTo(null);
-        setVisible(true);
+        inicializarFormatter();
     }
 
+    /**
+     * Inicializa los validadores de inputs para que funcionen solo con datos 
+     * enteros positivos.
+     */
+    private void inicializarFormatter(){
+        PlainDocument document = (PlainDocument) tfNVar.getDocument();
+        document.setDocumentFilter(new dual.vistas.tools.IntegerFilter());
+        document = (PlainDocument) tfNRes.getDocument();
+        document.setDocumentFilter(new dual.vistas.tools.IntegerFilter());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,7 +57,6 @@ public class MainView extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         tfNRes = new javax.swing.JTextField();
-        bPreparar = new javax.swing.JButton();
         bLimpiar = new javax.swing.JButton();
         pCoeficientes = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -80,12 +86,17 @@ public class MainView extends javax.swing.JFrame {
 
         jLabel2.setText("Numero de variables");
 
+        tfNVar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                prepararTabla(evt);
+            }
+        });
+
         jLabel3.setText("Numero de restricciones");
 
-        bPreparar.setText("Preparar");
-        bPreparar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bPrepararActionPerformed(evt);
+        tfNRes.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                prepararTabla(evt);
             }
         });
 
@@ -100,20 +111,19 @@ public class MainView extends javax.swing.JFrame {
         pObjetivo.setLayout(pObjetivoLayout);
         pObjetivoLayout.setHorizontalGroup(
             pObjetivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pObjetivoLayout.createSequentialGroup()
+            .addGroup(pObjetivoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pObjetivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(bLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(bPreparar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tfNVar, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbObjetivo, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
-                    .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tfNRes, javax.swing.GroupLayout.Alignment.LEADING))
+                .addGroup(pObjetivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bLimpiar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tfNVar)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1)
+                    .addComponent(cbObjetivo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator2)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                    .addComponent(jSeparator3)
+                    .addComponent(tfNRes))
                 .addContainerGap())
         );
         pObjetivoLayout.setVerticalGroup(
@@ -137,9 +147,7 @@ public class MainView extends javax.swing.JFrame {
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(tfNRes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(bPreparar, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(173, 173, 173)
                 .addComponent(bLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -291,8 +299,22 @@ public class MainView extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    private void bLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLimpiarActionPerformed
+        cbObjetivo.setSelectedItem(0);
+        tfNVar.setText("");
+        tfNRes.setText("");
+    }//GEN-LAST:event_bLimpiarActionPerformed
 
-    private void bPrepararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPrepararActionPerformed
+    private void bResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bResolverActionPerformed
+        
+    }//GEN-LAST:event_bResolverActionPerformed
+
+    private void bCoeficientesLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCoeficientesLimpiarActionPerformed
+        
+    }//GEN-LAST:event_bCoeficientesLimpiarActionPerformed
+
+    private void prepararTabla(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_prepararTabla
         // Obteniendo el caso 
         FuncionObjetivo.Caso caso = 
                 FuncionObjetivo.Caso.valueOf((String) cbObjetivo.getSelectedItem());
@@ -304,8 +326,7 @@ public class MainView extends javax.swing.JFrame {
             nVar = Integer.parseInt(tfNVar.getText());
             nRes = Integer.parseInt(tfNRes.getText());
         }catch(NumberFormatException ex){
-            JOptionPane.showMessageDialog(this, 
-                    "Valor de entrada invalido, ingrese solo numeros positivos.", "Numero de variables y restricciones", JOptionPane.ERROR_MESSAGE);
+            return;
         }
         
         // Preparando la tabla donde se ingresara los coeficientes
@@ -335,23 +356,7 @@ public class MainView extends javax.swing.JFrame {
         comboBox.addItem("MAYOR_IGUAL");
         comboBox.addItem("MENOR_IGUAL");
         columnaRestriccion.setCellEditor(new DefaultCellEditor(comboBox));
-        
-    }//GEN-LAST:event_bPrepararActionPerformed
-
-    private void bLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLimpiarActionPerformed
-        cbObjetivo.setSelectedItem(0);
-        tfNVar.setText("");
-        tfNRes.setText("");
-    }//GEN-LAST:event_bLimpiarActionPerformed
-
-    private void bResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bResolverActionPerformed
-        Funcion f = new Funcion(TableTools.getRowAt(tbObjetivo, 0));
-        f.imprimir();
-    }//GEN-LAST:event_bResolverActionPerformed
-
-    private void bCoeficientesLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCoeficientesLimpiarActionPerformed
-        
-    }//GEN-LAST:event_bCoeficientesLimpiarActionPerformed
+    }//GEN-LAST:event_prepararTabla
 
     /**
      * @param args the command line arguments
@@ -391,7 +396,6 @@ public class MainView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCoeficientesLimpiar;
     private javax.swing.JButton bLimpiar;
-    private javax.swing.JButton bPreparar;
     private javax.swing.JButton bResolver;
     private javax.swing.JComboBox<String> cbObjetivo;
     private javax.swing.JLabel jLabel1;

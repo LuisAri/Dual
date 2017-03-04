@@ -15,7 +15,21 @@ import dual.modelos.Restricciones;
 import dual.modelos.Tabloide;
 
 /**
- *
+ * Por hacer
+ * - Mostrar solucion optima
+ * - Validar datos de entrada
+ * - Hacer que funcione con simplex normal
+ *  - Hacer que detecte ejercicios con simplex normal y resolverlos
+ *  - Detectar casos especiales
+ *      - Detectar Multiples soluciones
+ *      - Detectar infactibilidad
+ *      - Detectar no acotamiento
+ * - Terminar vista
+ *  - Quitar preparar
+ *  - Agregar Iteraciones en resolver
+ *  - Agregar acerca de
+ *  - Hacer pruebas unitarias
+ * 
  * @author rexim de venezuela
  */
 public class Dual {
@@ -24,7 +38,9 @@ public class Dual {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new MainView();
+        MainView ventana = new MainView();
+        ventana.setLocationRelativeTo(null);
+        ventana.setVisible(true);
     }
     
     public static void testFuncion(){

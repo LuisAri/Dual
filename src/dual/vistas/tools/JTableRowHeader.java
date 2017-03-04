@@ -1,4 +1,4 @@
-package dual.tools;
+package dual.vistas.tools;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
