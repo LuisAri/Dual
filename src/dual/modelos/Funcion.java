@@ -327,12 +327,27 @@ public class Funcion {
     }
     
     /**
-     * Indica si todos los elementos de la funcion son negativos.
-     * @return booleano, true si todos son negativos, false en caso contrario.
+     * Indica si algun elemento de la funcion es negativo.
+     * @return booleano, true si algun elemento es negativo, false si no hay negativos.
      */
     public boolean tieneNegativos(){
         for(Float f: coeficientes){
-            if(f >= 0){
+            if(f < 0){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Indica si todos los elementos de la funcion son negativos, se considera el
+     * valor cero como un negativo.
+     * @return booleano, true si todos son negativos, false en caso contrario.
+     */
+    public boolean todosNegativos(){
+        for(Float f: coeficientes){
+            if(f > 0){
                 return false;
             }
         }

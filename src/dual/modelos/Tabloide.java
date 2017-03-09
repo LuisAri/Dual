@@ -269,4 +269,12 @@ public class Tabloide {
             System.out.println("");
         }
     }
+    
+    /**
+     * Imprime en funcion del tabloide los coeficientes de la solucion optima y el
+     * valor z.
+     */
+    public void imprimirOptima(Tabloide tabloide){
+        
+    }
 }

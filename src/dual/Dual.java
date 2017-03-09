@@ -38,12 +38,12 @@ public class Dual {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        /*
+        //*
         MainView ventana = new MainView();
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true); // */
         
-        testTabloide3();
+        //testTabloide3();
     }
     
     public static void testFuncion(){

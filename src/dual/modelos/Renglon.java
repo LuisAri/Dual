@@ -82,7 +82,7 @@ public class Renglon {
     }
 
     /**
-     * Retorna el conjunto de coeficientes.
+     * Retorna el conjunto de coeficientes tecnologicos.
      * @return 
      */
     public Funcion getCoeficientes(){
@@ -193,18 +193,18 @@ public class Renglon {
     }
 
     /**
-     * Retorna metadatos del menor valor del renglon en el coeficiente.
-     * @param caso
+     * Retorna posicion de la variable de decision mas negativa en el renglon, si
+     * es de maximizacion, y el mas positivo si es minimizacion.
+     * @param caso El caso de problema lineal, maximizacion o minimizacion.
      * @return 
      */
-    public MetaRenglon getMenor(FuncionObjetivo.Caso caso){
-        MetaRenglon temporal = new MetaRenglon();
-        temporal.setEsCoeficiente(true);
+    public int getMenor(FuncionObjetivo.Caso caso){
+        int temporal;
 
-        if(caso == FuncionObjetivo.Caso.MIN){
-            temporal.setPosicion(coeficientes.menor(true));
+        if(caso == FuncionObjetivo.Caso.MAX){
+            temporal = coeficientes.menor(true);
         }else{
-            temporal.setPosicion(coeficientes.absoluto().menor(true));
+            temporal = coeficientes.absoluto().menor(true);
         }
 
         return temporal;
