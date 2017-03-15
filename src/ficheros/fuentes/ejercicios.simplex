@@ -1,0 +1,6 @@
+; Ejercicio simplex maximizacion Autobus
+MAX 10x1 6x2
+1x1 1x2 <= 90
+20x1 50x2 <= 3000
+
+; Ejercicio simplex maximizacion Sastre
