@@ -78,6 +78,21 @@ public class Restriccion extends Funcion{
         this.signo = signo;
         this.ladoDerecho = ladoDerecho;
     }
+    
+    /**
+     * Constructor de la restriccion, en la que se le agrega el signo de la restriccion,
+     * los coeficientes y el lado derecho.
+     * 
+     * @param signo el signo de la restriccion.
+     * @param coeficientes los coeficientes, lado izquierdo o el primer miembro de la restriccion.
+     * @param ladoDerecho el segundo miembro de la restriccion.
+     */
+    public Restriccion(Signo signo, Float[] coeficientes, float ladoDerecho){
+        super(coeficientes);
+        
+        this.signo = signo;
+        this.ladoDerecho = ladoDerecho;
+    }
 
     /**
      * Retorna el signo de la restriccion.
