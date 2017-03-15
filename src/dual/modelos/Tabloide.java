@@ -147,10 +147,8 @@ public class Tabloide {
         // Divide el renglon de la funcion objetivo entre el renglon pivote.
         Renglon division  = cero.dividir(pivote);
         
-        // Obtiene la posicion del menor elemento de los coeficientes del renglon.
-        MetaRenglon meta  = division.getMenor(Caso.MAX);
-        
-        return meta.getPosicion();
+        // Retorna la posicion del menor elemento de los coeficientes del renglon.
+        return division.getMenor(Caso.MAX);
     }
     
     /**
