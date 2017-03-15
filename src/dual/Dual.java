@@ -15,6 +15,7 @@ import dual.modelos.Restricciones;
 import dual.modelos.Simplex;
 import dual.modelos.SistemaEcuacion;
 import dual.modelos.Tabloide;
+import ficheros.LectorFichero;
 
 /**
  * Por hacer
@@ -45,7 +46,7 @@ public class Dual {
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true); // */
         
-        testSimplex();
+        testFichero();
     }
     
     public static void testFuncion(){
@@ -162,9 +163,13 @@ public class Dual {
         sistema.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{20f, 50f}, 3000);
         
         Simplex simplex = new Simplex(sistema);
-        
-        while(simplex.siguiente() == Simplex.TABLA_SFB){
+        do{
             simplex.imprimir();
-        }
+        }while(simplex.siguiente() == Simplex.TABLA_SFB);
+        simplex.imprimirResultado();
+    }
+    
+    public static void testFichero(){
+        LectorFichero.leerFichero("D://ejercicios.simplex");
     }
 }
