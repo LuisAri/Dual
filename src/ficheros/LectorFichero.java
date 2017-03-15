@@ -139,8 +139,4 @@ public class LectorFichero {
         wr.close();
         bw.close();
     }
-    
-    public static void main(String[] args){
-        LectorFichero.leerFichero("D://ejercicios.simplex");
-    }
 }
