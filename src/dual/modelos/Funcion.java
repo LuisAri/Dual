@@ -319,6 +319,37 @@ public class Funcion {
     }
     
     /**
+     * Devuelve el valor mas positivo de la funcion, dando la opcion de ignorar,
+     * el cero.
+     * @param ignorarCero Indica si el cero debe ser tomado como valor mas grande.
+     * @return 
+     */
+    public int mayor(boolean ignorarCero){
+        
+        int mayor = 0;
+        if(ignorarCero){
+            while(coeficientes.get(mayor) == 0 && mayor < cantidad()){
+                mayor++;
+            }
+            if(coeficientes.get(mayor) == 0){
+                System.out.println("[Funcion.mayor()] Todos los valores de la funcion son cero");
+            }
+        }
+        
+        for(int i = mayor + 1; i < cantidad(); i++){
+            if(coeficientes.get(mayor) < coeficientes.get(i)){
+                if(ignorarCero){
+                    mayor = coeficientes.get(i) == 0? mayor: i;
+                }else{
+                    mayor = i;
+                }
+            }
+        }
+        
+        return mayor;
+    }
+    
+    /**
      * Retorna la cantidad de coeficientes de la funcion.
      * @return Cantidad de coeficientes.
      */
