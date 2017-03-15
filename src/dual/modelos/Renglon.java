@@ -204,7 +204,7 @@ public class Renglon {
         if(caso == FuncionObjetivo.Caso.MAX){
             temporal = coeficientes.menor(true);
         }else{
-            temporal = coeficientes.absoluto().menor(true);
+            temporal = coeficientes.mayor(true);
         }
 
         return temporal;
