@@ -12,6 +12,8 @@ import dual.modelos.FuncionObjetivo.Caso;
 import dual.modelos.Restriccion;
 import dual.modelos.Restriccion.Signo;
 import dual.modelos.Restricciones;
+import dual.modelos.Simplex;
+import dual.modelos.SistemaEcuacion;
 import dual.modelos.Tabloide;
 
 /**
@@ -20,10 +22,10 @@ import dual.modelos.Tabloide;
  * - Validar datos de entrada
  * - Hacer que funcione con simplex normal
  *  - Hacer que detecte ejercicios con simplex normal y resolverlos
- *  - Detectar casos especiales
- *      - Detectar Multiples soluciones
- *      - Detectar infactibilidad
- *      - Detectar no acotamiento
+ *  (LISTO) - Detectar casos especiales 
+ *      (LISTO) - Detectar Multiples soluciones
+ *      (LISTO) - Detectar infactibilidad
+ *      (LISTO) - Detectar no acotamiento
  * - Terminar vista
  *  - Quitar preparar
  *  - Agregar Iteraciones en resolver
@@ -38,12 +40,12 @@ public class Dual {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //*
+        /*
         MainView ventana = new MainView();
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true); // */
         
-        //testTabloide3();
+        testSimplex();
     }
     
     public static void testFuncion(){
@@ -150,5 +152,19 @@ public class Dual {
         
         System.out.println("\n\n[Optima]");
         optima.imprimir();
+    }
+    
+    public static void testSimplex(){
+        FuncionObjetivo objetivo = new FuncionObjetivo(Caso.MAX, new Float[]{10f, 6f});
+        
+        SistemaEcuacion sistema = new SistemaEcuacion(objetivo);
+        sistema.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{1f,1f}, 90);
+        sistema.agregarRestriccion(Signo.MENOR_IGUAL, new float[]{20f, 50f}, 3000);
+        
+        Simplex simplex = new Simplex(sistema);
+        
+        while(simplex.siguiente() == Simplex.TABLA_SFB){
+            simplex.imprimir();
+        }
     }
 }
