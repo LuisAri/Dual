@@ -209,6 +209,24 @@ public class Renglon {
 
         return temporal;
     }
+    
+    /**
+     * Retorna posicion de la variable de decision mas negativa en el renglon, si
+     * es de minimizacion, y el menor valor absoluto si es maximizacion. 
+     * @param caso El caso de problema lineal, maximizacion o minimizacion.
+     * @return 
+     */
+    public int getMenorDual(FuncionObjetivo.Caso caso){
+        int temporal;
+
+        if(caso == FuncionObjetivo.Caso.MIN){
+            temporal = coeficientes.menor(true);
+        }else{
+            temporal = coeficientes.absoluto().menor(true);
+        }
+
+        return temporal;
+    }
 
     /**
      * Imprime el renglon.
