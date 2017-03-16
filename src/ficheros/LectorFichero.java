@@ -6,6 +6,7 @@
 package ficheros;
 
 import dual.modelos.Simplex;
+import dual.modelos.SimplexDual;
 import dual.modelos.SistemaEcuacion;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -79,6 +80,7 @@ public class LectorFichero {
            BufferedWriter bw = new BufferedWriter(w);
            PrintWriter wr = new PrintWriter(bw);
            boolean comment = false; 
+           boolean dual = false;
            String comentario = "Empty";
            SistemaEcuacion sistema = new SistemaEcuacion();
            
@@ -87,11 +89,13 @@ public class LectorFichero {
                 if(cadena.startsWith(";")){
                     if(!comment){
                         comment = true;
-                        comentario = cadena.substring(1);
+                        dual = cadena.startsWith(";dual");
+                        int distancia = dual? 5:1;
+                        comentario = cadena.substring(distancia);
                         continue;
                     }
                     
-                    escribirBloque(comentario, sistema, wr);
+                    escribirBloque(comentario, sistema, wr, dual);
                     comentario = cadena.substring(1);
                     
                 }
@@ -100,7 +104,7 @@ public class LectorFichero {
                     sistema.getRestricciones().clear();
                 }
                 String digito = "((-|\\+|)(([0-9]*.[0-9]*)|[0-9]*))";
-                if(cadena.matches("(" + digito + "(\\s)*)+(<|>)=\\s" + digito)){
+                if(cadena.matches("(" + digito + "(\\s)*)+(<|>|)=\\s" + digito)){
                     sistema.agregarRestriccion(Parser.parsearRestriccion(cadena));
                 }
             }
@@ -124,11 +128,17 @@ public class LectorFichero {
      * @param f
      * @throws IOException 
      */
-    private static void escribirBloque(String encabezado, SistemaEcuacion sistema, PrintWriter wr) throws IOException{
+    private static void escribirBloque(String encabezado, SistemaEcuacion sistema, PrintWriter wr, boolean dual) throws IOException{
 
         wr.write(encabezado + "\n");
         
-        Simplex simplex = new Simplex(sistema);
+        Simplex simplex;
+        if(dual){
+            simplex = new SimplexDual(sistema);
+        }else{
+            simplex = new Simplex(sistema);
+        }
+        
         do{
             wr.write(simplex.toString() + "\n");
         }while(simplex.siguiente() == Simplex.TABLA_SFB);
