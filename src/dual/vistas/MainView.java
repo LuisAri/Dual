@@ -97,6 +97,7 @@ public class MainView extends javax.swing.JFrame {
         bGuardar = new javax.swing.JButton();
         cbSimplex = new javax.swing.JRadioButton();
         cbDual = new javax.swing.JRadioButton();
+        bConvertir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Proyecto Dual Simplex");
@@ -315,11 +316,23 @@ public class MainView extends javax.swing.JFrame {
         });
 
         bGuardar.setText("Guardar");
+        bGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bGuardarActionPerformed(evt);
+            }
+        });
 
         cbSimplex.setText("Simplex");
 
         cbDual.setSelected(true);
         cbDual.setText("Dual");
+
+        bConvertir.setText("Convertir");
+        bConvertir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bConvertirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pOpcionesLayout = new javax.swing.GroupLayout(pOpciones);
         pOpciones.setLayout(pOpcionesLayout);
@@ -336,13 +349,16 @@ public class MainView extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pOpcionesLayout.createSequentialGroup()
                         .addGroup(pOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(bCargar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbSimplex, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bGuardar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator6)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pOpcionesLayout.createSequentialGroup()
                                 .addComponent(cbDual)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jSeparator6))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pOpcionesLayout.createSequentialGroup()
+                                .addComponent(bCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bConvertir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addContainerGap())))
         );
         pOpcionesLayout.setVerticalGroup(
@@ -357,7 +373,9 @@ public class MainView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cbDual)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addComponent(bCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bConvertir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bCargar, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -405,21 +423,46 @@ public class MainView extends javax.swing.JFrame {
     }//GEN-LAST:event_bLimpiarActionPerformed
 
     private void bResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bResolverActionPerformed
+        taSolucion.setText("");
         TableModel model = tbObjetivo.getModel();
         float[] vector = new float[model.getColumnCount()];
         for(int j = 0; j < model.getColumnCount(); j++){
-            vector[j] = (Float)(model.getValueAt(0, j));
+            if(!(model.getValueAt(0, j) instanceof String)){
+                vector[j] = (Float)(model.getValueAt(0, j));
+            }else{
+                vector[j] = Float.parseFloat((String) model.getValueAt(0, j));
+            }
         }
         objetivo = new FuncionObjetivo(caso, vector);
         sistema = new SistemaEcuacion(objetivo);
         model = tbCoeficientes.getModel();
         for(int i = 0; i < model.getRowCount(); i++){
             for(int j = 0; j < model.getColumnCount() - 2; j++){
-                vector[j] = (Float)model.getValueAt(i, j);
+                if(!(model.getValueAt(i, j) instanceof String)){
+                    vector[j] = (Float)model.getValueAt(i, j);
+                }else{
+                    vector[j] = Float.parseFloat((String) model.getValueAt(i, j));
+                }
+                
             }
-            sistema.agregarRestriccion( (Restriccion.Signo)(model.getValueAt(i, model.getColumnCount() - 2)), 
+            float ladoDerecho = 0;
+            
+            if(!(model.getValueAt(i, model.getColumnCount() - 1) instanceof String)){
+                ladoDerecho = (Float)model.getValueAt(i, model.getColumnCount() - 1);
+            }else{
+                ladoDerecho = Float.parseFloat((String) model.getValueAt(i, model.getColumnCount() - 1));
+            }
+            Restriccion.Signo signo;
+            if(!(model.getValueAt(i, model.getColumnCount() - 2) instanceof String)){
+                signo = (Restriccion.Signo)(model.getValueAt(i, model.getColumnCount() - 2));
+            }else{
+                signo = Restriccion.Signo.valueOf((String)model.getValueAt(i, model.getColumnCount() - 2));
+            }
+            
+            
+            sistema.agregarRestriccion( signo, 
                                         vector, 
-                                        (Float)model.getValueAt(i,  model.getColumnCount() - 1));
+                                        ladoDerecho);
         }
         Simplex simplex = cbDual.isSelected()? new SimplexDual(sistema): new Simplex(sistema);
         do{
@@ -442,12 +485,32 @@ public class MainView extends javax.swing.JFrame {
 
     private void bCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCargarActionPerformed
         JFileChooser chooser = new JFileChooser();
-        chooser.showOpenDialog(this);
-        File f = chooser.getSelectedFile();
-        sistema = LectorFichero.obtenerSistema(f.getAbsolutePath());
-        cargarTabla();
-        LectorFichero.leerFichero(f.getAbsolutePath());
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File f = chooser.getSelectedFile();
+            sistema = LectorFichero.obtenerSistema(f.getAbsolutePath());
+            cargarTabla();
+        }
     }//GEN-LAST:event_bCargarActionPerformed
+
+    private void bGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bGuardarActionPerformed
+        if(sistema == null || taSolucion.getText().isEmpty()){
+            return;
+        }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            LectorFichero.guardarFichero(file, taSolucion.getText(), sistema);
+        }
+    }//GEN-LAST:event_bGuardarActionPerformed
+
+    private void bConvertirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConvertirActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            File f = chooser.getSelectedFile();
+            LectorFichero.leerFichero(f.getAbsolutePath());
+        }
+    }//GEN-LAST:event_bConvertirActionPerformed
 
     private void cargarTabla(){
         cbObjetivo.setSelectedIndex(sistema.getCaso().ordinal());
@@ -555,6 +618,7 @@ public class MainView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCargar;
     private javax.swing.JButton bCoeficientesLimpiar;
+    private javax.swing.JButton bConvertir;
     private javax.swing.JButton bGuardar;
     private javax.swing.JButton bLimpiar;
     private javax.swing.JButton bResolver;

@@ -398,14 +398,18 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="bCargar" alignment="0" max="32767" attributes="0"/>
                               <Component id="cbSimplex" alignment="0" max="32767" attributes="0"/>
                               <Component id="bGuardar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="jSeparator6" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="cbDual" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
-                              <Component id="jSeparator6" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="bCargar" min="-2" pref="75" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="bConvertir" max="32767" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -425,7 +429,10 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="cbDual" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="6" max="32767" attributes="0"/>
-                  <Component id="bCargar" min="-2" pref="28" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="bConvertir" max="32767" attributes="0"/>
+                      <Component id="bCargar" pref="28" max="32767" attributes="0"/>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="bGuardar" min="-2" pref="34" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
@@ -463,6 +470,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bGuardarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="cbSimplex">
           <Properties>
@@ -474,6 +484,14 @@
             <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Dual"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="bConvertir">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Convertir"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bConvertirActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

@@ -15,6 +15,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Clase dedicada a leer ficheros en formato .simplex con el ejercicio,
@@ -251,5 +253,25 @@ public class LectorFichero {
         }
         
         return null;
+    }
+    
+    public static void guardarFichero(File file, String cadena, SistemaEcuacion sistema){
+        try {
+            if(!file.getName().endsWith(EXTENSION_DESTINO)){
+                return;
+            }
+            
+            FileWriter w = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(w);
+            PrintWriter wr = new PrintWriter(bw);
+            
+            wr.write(cadena);
+            
+            wr.close();
+            bw.close();
+            w.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LectorFichero.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
