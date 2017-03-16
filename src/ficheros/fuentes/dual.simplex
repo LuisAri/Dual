@@ -1,0 +1,10 @@
+;dual Ejercicio dual simplex minimizacion
+MIN 2x1 1x2
+3x1 1x2 >= 3
+4x1 3x2 >= 6
+1x1 2x2 = 3
+;dual Ejercicio dual simplex maximizacion
+MAX -4x1 -12x2 -18x3
+1x1 0x2 3x3 >= 3
+0x1 2x2 2x3 >= 5
+; Fin

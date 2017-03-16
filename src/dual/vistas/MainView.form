@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup">
+    </Component>
+  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
     <Property name="title" type="java.lang.String" value="Proyecto Dual Simplex"/>
@@ -42,7 +46,7 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="pObjetivo" max="32767" attributes="0"/>
                   <Component id="pCoeficientes" max="32767" attributes="0"/>
@@ -50,7 +54,7 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="pOpciones" max="32767" attributes="0"/>
-                  <Component id="pSolucion" min="-2" max="-2" attributes="0"/>
+                  <Component id="pSolucion" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -148,7 +152,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="tfNVar">
           <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="prepararTabla"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="prepararTabla"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -160,7 +164,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="tfNRes">
           <Events>
-            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="prepararTabla"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="prepararTabla"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="bLimpiar">
@@ -339,7 +343,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator5" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane3" pref="155" max="32767" attributes="0"/>
+                  <Component id="jScrollPane3" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -389,16 +393,19 @@
                           <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="bAyuda" alignment="0" max="32767" attributes="0"/>
-                              <Component id="jSeparator6" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="bSalir" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="bSalir" alignment="0" max="32767" attributes="0"/>
-                              <Component id="bAcerca" max="32767" attributes="0"/>
+                              <Component id="bCargar" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbSimplex" alignment="0" max="32767" attributes="0"/>
+                              <Component id="bGuardar" alignment="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="cbDual" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="jSeparator6" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
@@ -414,11 +421,15 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jSeparator6" min="-2" pref="10" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="bAyuda" min="-2" pref="36" max="-2" attributes="0"/>
+                  <Component id="cbSimplex" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="cbDual" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="6" max="32767" attributes="0"/>
+                  <Component id="bCargar" min="-2" pref="28" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="bAcerca" min="-2" pref="46" max="-2" attributes="0"/>
+                  <Component id="bGuardar" min="-2" pref="34" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="bSalir" max="32767" attributes="0"/>
+                  <Component id="bSalir" min="-2" pref="41" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -432,19 +443,36 @@
         </Component>
         <Component class="javax.swing.JSeparator" name="jSeparator6">
         </Component>
-        <Component class="javax.swing.JButton" name="bAyuda">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Ayuda"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JButton" name="bSalir">
           <Properties>
             <Property name="text" type="java.lang.String" value="Salir"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bSalirActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="bAcerca">
+        <Component class="javax.swing.JButton" name="bCargar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Acerca de"/>
+            <Property name="text" type="java.lang.String" value="Cargar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bCargarActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="bGuardar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Guardar"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="cbSimplex">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Simplex"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="cbDual">
+          <Properties>
+            <Property name="selected" type="boolean" value="true"/>
+            <Property name="text" type="java.lang.String" value="Dual"/>
           </Properties>
         </Component>
       </SubComponents>

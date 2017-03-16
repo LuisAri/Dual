@@ -21,8 +21,8 @@ package dual.modelos;
  * 
  * @see dual.modelos.Funcion
  * @see dual.modelos.Restriccion
- * @see dual.modelos.Restricciones
- * @see dual.modelos.Tabloide
+ * @see dual.modelos.old.Restricciones
+ * @see dual.modelos.old.Tabloide
  * @author Hector
  */
 public class FuncionObjetivo extends Funcion{

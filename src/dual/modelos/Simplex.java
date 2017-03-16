@@ -285,10 +285,8 @@ public class Simplex {
     }
     
     /**
-     * Determina si la sfb es infactible, una sfb es infactible cuando alguna de 
-     * sus restricciones no se puede satisfacer de forma simultanea con el resto
-     * de las demas restricciones, solo se presenta en casos donde haya restricciones
-     * mayor que en el mismo problema lineal.
+     * Determina si la sfb es infactible, una sfb es infactible cuando alguno de los
+     * elementos del lado derecho son menor a cero.
      * 
      * @return 
      */

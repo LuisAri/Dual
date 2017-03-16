@@ -169,4 +169,75 @@ public class LectorFichero {
         
         return respuesta + "\n";
     }
+    
+    public static SistemaEcuacion obtenerSistema(String fileName){
+        try{
+            if(!fileName.endsWith(EXTENSION_ORIGEN)){
+                throw new IOException("[LectorFichero.leerFichero()]Extension invalida.");
+            }
+            
+            String destino = fileName.replaceAll(EXTENSION_ORIGEN, EXTENSION_DESTINO);
+            f = new FileReader(fileName);
+            b = new BufferedReader(f);
+            
+            
+            File f;
+            f = new File(destino);
+        
+            try{
+               String cadena;
+               FileWriter w = new FileWriter(f);
+               BufferedWriter bw = new BufferedWriter(w);
+               PrintWriter wr = new PrintWriter(bw);
+               boolean comment = false; 
+               boolean dual = false;
+               String comentario = "Empty";
+               SistemaEcuacion sistema = new SistemaEcuacion();
+
+                while((cadena = b.readLine())!= null) {
+
+                    if(cadena.startsWith(";")){
+                        if(!comment){
+                            comment = true;
+                            dual = cadena.startsWith(";dual");
+                            int distancia = dual? 5:1;
+                            comentario = cadena.substring(distancia);
+                            continue;
+                        }
+
+                        return sistema;
+
+                    }
+                    if(cadena.startsWith("MAX") || cadena.startsWith("MIN")){
+                        sistema.setFuncionObjetivo(Parser.parsearFuncionObjetivo(cadena));
+                        sistema.getRestricciones().clear();
+                    }
+                    String digito = "((-|\\+|)(([0-9]*.[0-9]*)|[0-9]*))";
+                    if(cadena.matches("(" + digito + "(\\s)*)+(<|>|)=\\s" + digito)){
+                        sistema.agregarRestriccion(Parser.parsearRestriccion(cadena));
+                    }
+                }
+
+                wr.close();
+                bw.close();
+                w.close();
+
+            }catch(Exception e){
+                System.out.println(e.getMessage());
+            };
+            
+            
+        }catch(IOException ex){
+            System.out.println("[LectorFichero.leerFichero()] No se pudo encontrar el archivo especificado: " + ex);
+        }finally{
+            try{
+                b.close();
+                f.close();
+            }catch(Exception ex){
+                System.out.println("[LectorFichero.leerFichero()] No se pudo cerrar los archivos: " + ex);
+            }
+        }
+        
+        return null;
+    }
 }

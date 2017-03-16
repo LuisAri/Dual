@@ -6,10 +6,19 @@
 package dual.vistas;
 
 import dual.modelos.FuncionObjetivo;
+import dual.modelos.Restriccion;
+import dual.modelos.Simplex;
+import dual.modelos.SimplexDual;
+import dual.modelos.SistemaEcuacion;
+import dual.modelos.Vector;
+import ficheros.LectorFichero;
+import java.io.File;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import javax.swing.text.PlainDocument;
 
 /**
@@ -18,13 +27,19 @@ import javax.swing.text.PlainDocument;
  */
 public class MainView extends javax.swing.JFrame {
 
+    FuncionObjetivo.Caso caso;
+    FuncionObjetivo objetivo;
+    SistemaEcuacion sistema;
+    
     /**
      * Inicializa la ventana, inicia los validadores de inputs, componentes,
      * posicion y visibilidad de la ventana.
      */
     public MainView() {
         initComponents();
-        inicializarFormatter();
+        buttonGroup.add(cbDual);
+        buttonGroup.add(cbSimplex);
+
     }
 
     /**
@@ -47,6 +62,7 @@ public class MainView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup = new javax.swing.ButtonGroup();
         pObjetivo = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -77,9 +93,11 @@ public class MainView extends javax.swing.JFrame {
         pOpciones = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
-        bAyuda = new javax.swing.JButton();
         bSalir = new javax.swing.JButton();
-        bAcerca = new javax.swing.JButton();
+        bCargar = new javax.swing.JButton();
+        bGuardar = new javax.swing.JButton();
+        cbSimplex = new javax.swing.JRadioButton();
+        cbDual = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Proyecto Dual Simplex");
@@ -92,16 +110,16 @@ public class MainView extends javax.swing.JFrame {
 
         jLabel2.setText("Numero de variables");
 
-        tfNVar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+        tfNVar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prepararTabla(evt);
             }
         });
 
         jLabel3.setText("Numero de restricciones");
 
-        tfNRes.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
+        tfNRes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 prepararTabla(evt);
             }
         });
@@ -275,7 +293,7 @@ public class MainView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                .addComponent(jScrollPane3)
                 .addContainerGap())
         );
 
@@ -283,11 +301,26 @@ public class MainView extends javax.swing.JFrame {
 
         jLabel7.setText("Opciones");
 
-        bAyuda.setText("Ayuda");
-
         bSalir.setText("Salir");
+        bSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bSalirActionPerformed(evt);
+            }
+        });
 
-        bAcerca.setText("Acerca de");
+        bCargar.setText("Cargar");
+        bCargar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bCargarActionPerformed(evt);
+            }
+        });
+
+        bGuardar.setText("Guardar");
+
+        cbSimplex.setText("Simplex");
+
+        cbDual.setSelected(true);
+        cbDual.setText("Dual");
 
         javax.swing.GroupLayout pOpcionesLayout = new javax.swing.GroupLayout(pOpciones);
         pOpciones.setLayout(pOpcionesLayout);
@@ -300,14 +333,17 @@ public class MainView extends javax.swing.JFrame {
                         .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(12, 12, 12))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pOpcionesLayout.createSequentialGroup()
-                        .addGroup(pOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(bAyuda, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jSeparator6))
+                        .addComponent(bSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pOpcionesLayout.createSequentialGroup()
                         .addGroup(pOpcionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(bSalir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bAcerca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(bCargar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbSimplex, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(bGuardar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pOpcionesLayout.createSequentialGroup()
+                                .addComponent(cbDual)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jSeparator6))
                         .addContainerGap())))
         );
         pOpcionesLayout.setVerticalGroup(
@@ -318,11 +354,15 @@ public class MainView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbSimplex)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbDual)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                .addComponent(bCargar, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bAcerca, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bSalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -344,14 +384,14 @@ public class MainView extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pObjetivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pCoeficientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pOpciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pSolucion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pSolucion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -362,31 +402,93 @@ public class MainView extends javax.swing.JFrame {
         cbObjetivo.setSelectedItem(0);
         tfNVar.setText("");
         tfNRes.setText("");
+        prepararTabla();
     }//GEN-LAST:event_bLimpiarActionPerformed
 
     private void bResolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bResolverActionPerformed
-        
+        TableModel model = tbObjetivo.getModel();
+        float[] vector = new float[model.getColumnCount()];
+        for(int j = 0; j < model.getColumnCount(); j++){
+            vector[j] = (Float)(model.getValueAt(0, j));
+        }
+        objetivo = new FuncionObjetivo(caso, vector);
+        sistema = new SistemaEcuacion(objetivo);
+        model = tbCoeficientes.getModel();
+        for(int i = 0; i < model.getRowCount(); i++){
+            for(int j = 0; j < model.getColumnCount() - 2; j++){
+                vector[j] = (Float)model.getValueAt(i, j);
+            }
+            sistema.agregarRestriccion( (Restriccion.Signo)(model.getValueAt(i, model.getColumnCount() - 2)), 
+                                        vector, 
+                                        (Float)model.getValueAt(i,  model.getColumnCount() - 1));
+        }
+        Simplex simplex = cbDual.isSelected()? new SimplexDual(sistema): new Simplex(sistema);
+        do{
+            taSolucion.append(simplex.toString() + "\n");
+        }while(simplex.siguiente() == Simplex.TABLA_SFB);
+        taSolucion.append(simplex.getResultado());
     }//GEN-LAST:event_bResolverActionPerformed
 
     private void bCoeficientesLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCoeficientesLimpiarActionPerformed
-        
+        prepararTabla();
     }//GEN-LAST:event_bCoeficientesLimpiarActionPerformed
 
-    private void prepararTabla(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_prepararTabla
-        // Obteniendo el caso 
-        FuncionObjetivo.Caso caso = 
-                FuncionObjetivo.Caso.valueOf((String) cbObjetivo.getSelectedItem());
-        // Obteniendo el numero de variables y restricciones 
+    private void prepararTabla(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prepararTabla
+        prepararTabla();
+    }//GEN-LAST:event_prepararTabla
+
+    private void bSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_bSalirActionPerformed
+
+    private void bCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCargarActionPerformed
+        JFileChooser chooser = new JFileChooser();
+        chooser.showOpenDialog(this);
+        File f = chooser.getSelectedFile();
+        sistema = LectorFichero.obtenerSistema(f.getAbsolutePath());
+        cargarTabla();
+        LectorFichero.leerFichero(f.getAbsolutePath());
+    }//GEN-LAST:event_bCargarActionPerformed
+
+    private void cargarTabla(){
+        cbObjetivo.setSelectedIndex(sistema.getCaso().ordinal());
+        tfNVar.setText(Integer.toString(sistema.getFuncionObjetivo().cantidad()));
+        tfNRes.setText(Integer.toString(sistema.getRenglones()));
+        prepararTabla();
+        TableModel model = tbObjetivo.getModel();
+        for(int j = 0; j < model.getColumnCount(); j++){
+            model.setValueAt(sistema.getFuncionObjetivo().get(j),0, j);
+        }
+        model = tbCoeficientes.getModel();
+        for(int i = 0; i < model.getRowCount(); i++){
+            for(int j = 0; j < model.getColumnCount(); j++){
+                if(j < model.getColumnCount() - 2){
+                    model.setValueAt(sistema.getRestricciones().get(i).get(j),i, j);
+                }else if(j == model.getColumnCount() - 2){
+                    model.setValueAt(sistema.getRestricciones().get(i).getSigno(),i, j);
+                }else{
+                    model.setValueAt(sistema.getRestricciones().get(i).getLadoDerecho(),i, j);
+                }
+            }
+        }
+    }
+    
+    private void prepararTabla(){
+        // Obteniendo el caso
+        caso =
+        FuncionObjetivo.Caso.valueOf((String) cbObjetivo.getSelectedItem());
+        // Obteniendo el numero de variables y restricciones
         int nVar = 0;
         int nRes = 0;
-        
+
         try{
             nVar = Integer.parseInt(tfNVar.getText());
             nRes = Integer.parseInt(tfNRes.getText());
         }catch(NumberFormatException ex){
-            return;
+            nVar = 2;
+            nRes = 3;
         }
-        
+
         // Preparando la tabla donde se ingresara los coeficientes
         DefaultTableModel model = new DefaultTableModel();
         model.setColumnCount(nVar);
@@ -414,8 +516,8 @@ public class MainView extends javax.swing.JFrame {
         comboBox.addItem("MAYOR_IGUAL");
         comboBox.addItem("MENOR_IGUAL");
         columnaRestriccion.setCellEditor(new DefaultCellEditor(comboBox));
-    }//GEN-LAST:event_prepararTabla
-
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -452,13 +554,16 @@ public class MainView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bAcerca;
-    private javax.swing.JButton bAyuda;
+    private javax.swing.JButton bCargar;
     private javax.swing.JButton bCoeficientesLimpiar;
+    private javax.swing.JButton bGuardar;
     private javax.swing.JButton bLimpiar;
     private javax.swing.JButton bResolver;
     private javax.swing.JButton bSalir;
+    private javax.swing.ButtonGroup buttonGroup;
+    private javax.swing.JRadioButton cbDual;
     private javax.swing.JComboBox<String> cbObjetivo;
+    private javax.swing.JRadioButton cbSimplex;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
