@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Clase que representa el tabloide simplex dual.
  * 
- * 
+ * @deprecated 
  * @author Hector
  */
 public class Tabloide {

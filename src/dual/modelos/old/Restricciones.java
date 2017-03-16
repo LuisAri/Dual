@@ -24,6 +24,7 @@ import java.util.List;
  * - Remover restriccion
  * - Obtener restriccion
  * 
+ * @deprecated 
  * @author Hector
  */
 public class Restricciones {
