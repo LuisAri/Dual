@@ -91,7 +91,7 @@ public class LectorFichero {
                         continue;
                     }
                     
-                    escribirBloque(comentario, sistema, f);
+                    escribirBloque(comentario, sistema, wr);
                     comentario = cadena.substring(1);
                     
                 }
@@ -104,9 +104,10 @@ public class LectorFichero {
                     sistema.agregarRestriccion(Parser.parsearRestriccion(cadena));
                 }
             }
-                // ([0-9]*.[0-9]*|[0-9]*)
+
             wr.close();
             bw.close();
+            w.close();
            
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -123,20 +124,39 @@ public class LectorFichero {
      * @param f
      * @throws IOException 
      */
-    private static void escribirBloque(String encabezado, SistemaEcuacion sistema, File f) throws IOException{
-        FileWriter w = new FileWriter(f);
-        BufferedWriter bw = new BufferedWriter(w);
-        PrintWriter wr = new PrintWriter(bw);
-        
+    private static void escribirBloque(String encabezado, SistemaEcuacion sistema, PrintWriter wr) throws IOException{
+
         wr.write(encabezado + "\n");
         
         Simplex simplex = new Simplex(sistema);
         do{
             wr.write(simplex.toString() + "\n");
         }while(simplex.siguiente() == Simplex.TABLA_SFB);
-        wr.write(simplex.getResultado());
         
-        wr.close();
-        bw.close();
+        wr.write(estadoTabla(simplex.siguiente()));
+        
+        
+        wr.write(simplex.getResultado());
+    }
+    
+    private static String estadoTabla(int estado){
+        String respuesta = "";
+        
+        switch(estado){
+            case Simplex.TABLA_INFACTIBLE:
+                respuesta = "El tabloide es infactible.";
+            break;
+            case Simplex.TABLA_MULTIPLES_SOLUCIONES:
+                respuesta = "El tabloide tiene multiples soluciones.";
+            break;
+            case Simplex.TABLA_NO_ACOTADA:
+                respuesta = "El problema es no acotado.";
+            break;
+            case Simplex.TABLA_NO_SFB:
+                respuesta = "El problema no tiene solucion factible basica inicial.";
+            break;
+        }
+        
+        return respuesta + "\n";
     }
 }
