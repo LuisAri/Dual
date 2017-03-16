@@ -1,0 +1,14 @@
+; 1. Ejercicio simplex caso especial no acotado (Indico caso no acotado) http://148.204.211.134/polilibros/portal/polilibros/P_Terminados/InvOperChave/Documentos/Unidad4/UNIDAD42.htm
+MAX 2x1 1x2
+1x1 -1x2 <= 10
+2x1 0x2 <= 40
+; 2. Ejercicio simplex caso especial multiples soluciones (Indico caso multiples soluciones) http://148.204.211.134/polilibros/portal/polilibros/P_Terminados/InvOperChave/Documentos/Unidad4/UNIDAD42.htm
+MAX 2x1 4x2
+1x1 1x2 <= 5
+1x1 2x2 <= 4
+; 3. Ejercicio simplex caso especial infactible () http://148.204.211.134/polilibros/portal/polilibros/P_Terminados/InvOperChave/Documentos/Unidad4/UNIDAD42.htm
+MAX 3x1 2x2
+2x1 1x2 <= 2
+3x1 4x2 >= 12
+; Fin
+
