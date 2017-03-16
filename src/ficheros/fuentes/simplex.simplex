@@ -1,0 +1,31 @@
+; 1. Ejercicio simplex maximizacion menor igual Autobus (Bien)
+MAX 10x1 6x2
+1x1 1x2 <= 90
+20x1 50x2 <= 3000
+; 2. Ejercicio simplex maximizacion menor igual Sastre (Bien)
+MAX 1x1 1x2
+2x1 4x2 <= 100
+5x1 4x2 <= 140
+; 3. Ejercicio simplex maximizacion menor igual empanadas (Bien)
+MAX 1x1 0.5x2
+20x1 40x2 <= 480
+4x1 1x2 <= 30
+; 4. Ejercicio simplex maximizacion corporacion messi de mesas y sillas (Bien)
+MAX 8x1 5x2
+1x1 1x2 <= 6
+9x1 5x2 <= 45
+; 5. Ejercicio simplex minimizacion mayor igual minas (Bien)
+MIN -2x1 -2x2
+1x1 3x1 >= 90
+3x1 3x2 >= 180
+5x1 3x2 >= 210
+; 1. Ejercicio simplex minimizacion menor igual youtube https://www.youtube.com/watch?v=BDA4_JsKedA
+MIN -5x1 -4x2
+2x1 2x2 <= 14
+6x1 3x2 <= 36
+5x1 10x2 <= 60
+; 2. Ejercicio simplex minimizacion menor igual mty http://www.mty.itesm.mx/dmti/materias/tc3001/lecturas/tc3001-04-minimizacion.pdf
+MIN -2x1 -3x2
+1x1 1x2 <= 15
+1x1 2x2 <= 20
+; Fin
