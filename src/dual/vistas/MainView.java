@@ -10,7 +10,6 @@ import dual.modelos.Restriccion;
 import dual.modelos.Simplex;
 import dual.modelos.SimplexDual;
 import dual.modelos.SistemaEcuacion;
-import dual.modelos.Vector;
 import ficheros.LectorFichero;
 import java.io.File;
 import javax.swing.DefaultCellEditor;

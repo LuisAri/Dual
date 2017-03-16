@@ -9,16 +9,6 @@ package dual.modelos;
  * Funcion lineal heredada de la clase funcion. Representa la funcion objetivo
  * utilizada en el metodo simplex.
  * 
- * Atributos:
- * 
- * - Todos los atributos heredados de la clase Funcion.
- * - Caso de funcion objetivo, si es maximizar o minimizar.
- * 
- * Metodos:
- * 
- * - Todos los metodos heredados de la clase Funcion.
- * - Reimplementacion del metodo imprimir.
- * 
  * @see dual.modelos.Funcion
  * @see dual.modelos.Restriccion
  * @see dual.modelos.old.Restricciones

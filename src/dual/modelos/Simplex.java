@@ -10,14 +10,24 @@ import dual.modelos.Resultado.Basica;
 import java.util.ArrayList;
 
 /**
- *
+ * Clase que representa el metodo simplex para resolver problemas lineales.
  * @author Hector
  */
 public class Simplex {
     
+    /**
+     * Constante que indica el renglon de la funcion objetivo.
+     */
     protected static final int RENGLON_OBJETIVO      = 0;
+    
+    /**
+     * Constante que indica el primer renglon restriccion.
+     */
     protected static final int RENGLON_RESTRICCION   = 1;
     
+    /**
+     * Indicadores de estado
+     */
     public static final int TABLA_OPTIMA = 2;
     public static final int TABLA_MULTIPLES_SOLUCIONES = 3;
     public static final int TABLA_INFACTIBLE = 4;
@@ -25,12 +35,26 @@ public class Simplex {
     public static final int TABLA_SFB = 6;
     public static final int TABLA_NO_SFB = 7;
     
+    /**
+     * El sistema de ecuacion que contiene la funcion objetivo y las restricciones.
+     */
     protected SistemaEcuacion sistema;
 
+    /**
+     * El conjunto de renglones.
+     */
     protected ArrayList<Renglon> renglones;
 
+    /**
+     * El numero de iteracion o ciclo en el que se aplico simplex.
+     */
     protected int iteracion;
     
+    /**
+     * Constructor default.
+     * 
+     * @param sistema 
+     */
     public Simplex(SistemaEcuacion sistema){
         this.sistema = sistema;
         renglones = sistema.getEstandar();

@@ -9,26 +9,6 @@ package dual.modelos;
  * Clase que representa una funcion lineal en el programa. Consta de metodos
  * para realizar operaciones basicas y escalares entre funciones.
  * 
- * Atributos:
- * 
- * - Constante NEGATIVO.
- * - Vector que son los coeficientes
- * 
- * Metodos:
- * 
- * - Sumar
- * - Restar
- * - Multiplicacion entre vectores y escalar
- * - Division entre vectores y escalar
- * 
- * - Negativo
- * - Menor
- * - Absoluto
- * - Cantidad
- * - Tiene negativos
- * - Tiene ceros
- * - Imprimir
- * 
  * @see dual.modelos.Vector
  * @see dual.modelos.FuncionObjetivo
  * @see dual.modelos.Restriccion

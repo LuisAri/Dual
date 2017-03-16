@@ -189,12 +189,4 @@ public class SistemaEcuacion {
         }
         System.out.println("");
     }
-    
-    public static void main(String[] args){
-        FuncionObjetivo objetivo = new FuncionObjetivo(dual.modelos.FuncionObjetivo.Caso.MAX, new Float[]{-4f, -12f, -18f});
-        SistemaEcuacion sistema = new SistemaEcuacion(objetivo);
-        sistema.agregarRestriccion(dual.modelos.Restriccion.Signo.MAYOR_IGUAL, new float[]{1f,0f,3f}, 3);
-        sistema.agregarRestriccion(dual.modelos.Restriccion.Signo.MAYOR_IGUAL, new float[]{0f, 2f, 2f}, 5);
-        sistema.imprimir();
-    }
 }

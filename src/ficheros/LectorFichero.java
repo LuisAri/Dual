@@ -149,6 +149,12 @@ public class LectorFichero {
         wr.write(simplex.getResultado());
     }
     
+    /**
+     * Determina el estado del conjunto de renglones y retorna una cadena
+     * en funcion del estado.
+     * @param estado
+     * @return 
+     */
     private static String estadoTabla(int estado){
         String respuesta = "";
         
@@ -170,6 +176,12 @@ public class LectorFichero {
         return respuesta + "\n";
     }
     
+    /**
+     * Lee el primer sistema de ecuaciones de un archivo simplex y lo parsea en
+     * un objeto SistemaEcuacion.
+     * @param fileName
+     * @return 
+     */
     public static SistemaEcuacion obtenerSistema(String fileName){
         try{
             if(!fileName.endsWith(EXTENSION_ORIGEN)){

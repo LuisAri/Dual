@@ -10,19 +10,6 @@ package dual.modelos;
  * utilizada en el metodo simplex, un conjunto de objetos de tipo restriccion sera
  * almacenado en un objeto Restricciones.
  * 
- * Atributos:
- * 
- * - Todos los atributos heredados de la clase Funcion.
- * - Signo de la restriccion, puede ser igual, mayor o igual, menor o igual.
- * - El valor del lado derecho de la inecuacion.
- * 
- * Metodos:
- * 
- * - Todos los metodos heredados de la clase Funcion.
- * - El estandar de la restriccion.
- * - La funcion que indica las variables de holguras.
- * - Reimplementacion del metodo imprimir.
- * 
  * @see dual.modelos.Funcion
  * @see dual.modelos.FuncionObjetivo
  * @see dual.modelos.old.Restricciones
