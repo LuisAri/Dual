@@ -6,6 +6,7 @@
 package dual.modelos;
 
 import dual.modelos.FuncionObjetivo.Caso;
+import dual.modelos.Resultado.Basica;
 import java.util.ArrayList;
 
 /**
@@ -14,8 +15,8 @@ import java.util.ArrayList;
  */
 public class Simplex {
     
-    private static final int RENGLON_OBJETIVO      = 0;
-    private static final int RENGLON_RESTRICCION   = 1;
+    protected static final int RENGLON_OBJETIVO      = 0;
+    protected static final int RENGLON_RESTRICCION   = 1;
     
     public static final int TABLA_OPTIMA = 2;
     public static final int TABLA_MULTIPLES_SOLUCIONES = 3;
@@ -24,11 +25,11 @@ public class Simplex {
     public static final int TABLA_SFB = 6;
     public static final int TABLA_NO_SFB = 7;
     
-    private SistemaEcuacion sistema;
+    protected SistemaEcuacion sistema;
 
-    private ArrayList<Renglon> renglones;
+    protected ArrayList<Renglon> renglones;
 
-    private int iteracion;
+    protected int iteracion;
     
     public Simplex(SistemaEcuacion sistema){
         this.sistema = sistema;
@@ -38,9 +39,10 @@ public class Simplex {
     
     /**
      * Para escojer la variable de decision que entra, tomaremos el valor de z
-     * con mayor negatividad (ignorando los 0), siendo esa nuestra columna pivote.
+     * con mayor negatividad (ignorando los 0) para casos de maximizacion,
+     * para minimizacion se toma elemento mas positivo, siendo esa nuestra columna pivote.
      * 
-     * @return 
+     * @return Posicion de la columna pivote en los coeficientes tecnologicos.
      */
     public int getColumnaPivote(){
         Renglon z   = renglones.get(RENGLON_OBJETIVO);
@@ -50,7 +52,8 @@ public class Simplex {
     /**
      * Para encontrar que variable de holgura sale, se tiene que dividir, los 
      * valores del lado derecho entre su columna pivote, y tomamos la fila con 
-     * el valor de cociente menor positivo (max).
+     * el valor de cociente menor positivo, <b>esto se aplica tanto para casos de
+     * maximizacion como de minimizacion</b>.
     */
     public int getFilaPivote(){
         
@@ -131,10 +134,7 @@ public class Simplex {
      */
     public int siguiente(){
         // Valido los casos especiales del tabloide.
-        if(this.esOptima()){
-            System.out.println("[Simplex.siguiente()] La tabla es optima, posee una solucion basica factible.");
-            return TABLA_OPTIMA;
-        }else if(this.esNoAcotada()){
+        if(this.esNoAcotada()){
             System.out.println("[Simplex.siguiente()] La tabla es no acotada, posee una columna vnb no positiva.");
             return TABLA_NO_ACOTADA;
         }else if(this.esMultipleSoluciones()){
@@ -143,6 +143,9 @@ public class Simplex {
         }else if(this.esInfactible()){
             System.out.println("[Simplex.siguiente()] La tabla es infactible, no todas las restricciones se satisfacen simultaneamente.");
             return TABLA_INFACTIBLE;
+        }else if(this.esOptima()){
+            System.out.println("[Simplex.siguiente()] La tabla es optima, posee una solucion basica factible.");
+            return TABLA_OPTIMA;
         }else if(this.esNoSfb() && iteracion == 1){
             System.out.println("[Simplex.siguiente()] La tabla no tiene solucion basica factible inicial, se deberia aplicar dual simplex.");
             return TABLA_NO_SFB;
@@ -236,18 +239,6 @@ public class Simplex {
     }
     
     /**
-     * Determina si la sfb es infactible, una sfb es infactible cuando alguna de 
-     * sus restricciones no se puede satisfacer de forma simultanea con el resto
-     * de las demas restricciones, solo se presenta en casos donde haya restricciones
-     * mayor que en el mismo problema lineal.
-     * 
-     * @return 
-     */
-    public boolean esInfactible(){
-        return false;
-    }
-    
-    /**
      * Determina si la solucion factible basica tiene multiples soluciones.
      * Un sfb tiene multiples soluciones cuando una variable no basica tiene
      * valor cero en el renglon z.
@@ -294,6 +285,18 @@ public class Simplex {
     }
     
     /**
+     * Determina si la sfb es infactible, una sfb es infactible cuando alguna de 
+     * sus restricciones no se puede satisfacer de forma simultanea con el resto
+     * de las demas restricciones, solo se presenta en casos donde haya restricciones
+     * mayor que en el mismo problema lineal.
+     * 
+     * @return 
+     */
+    public boolean esInfactible(){
+        return false;
+    }
+    
+    /**
      * Determina si existe una sfbi, no existe una sfbi cuando todas las variables
      * de holgura (VB) son negativas.
      */
@@ -301,6 +304,9 @@ public class Simplex {
         return false;
     }
     
+    /**
+     * Imprime el tabloide en su iteracion actual.
+     */
     public void imprimir(){
         int i = 0;
         for(Renglon renglon: renglones){
@@ -319,5 +325,51 @@ public class Simplex {
             System.out.printf("%.5f", renglon.ladoDerecho);
             System.out.println("");
         }
+    }
+    
+    /**
+     * Imprime las variables basicas.
+     */
+    public void imprimirResultado(){
+        System.out.println(this.getResultado());
+    }
+    
+    /**
+     * Devuelve la tabla en forma de cadena.
+     * @return 
+     */
+    public String toString(){
+        String cadena ="";
+        int i = 0;
+        for(Renglon renglon: renglones){
+            cadena += i++ + " | " + renglon.esZ + " \t| ";
+            
+            int x = 1; 
+            for(Float coeficiente: renglon.coeficientes.coeficientes){
+                cadena += coeficiente + "x" + x++ + " \t";
+            }
+            
+            x = 1;
+            for(Float coeficiente: renglon.holguras.coeficientes){
+                cadena += coeficiente + "s" + x++ + "\t";
+            }
+            
+            cadena += "|\t" + renglon.ladoDerecho + "\n";
+        }
+        
+        return cadena;
+    }
+    
+    /**
+     * Retorna una cadena con todos los resultados de la simulacion.
+     * @return 
+     */
+    public String getResultado(){
+        Resultado resultado = new Resultado(renglones);
+        String cadena = "Z = " + resultado.z + "\n";
+        for(Basica b: resultado.variables){
+            cadena += "x" + (b.x + 1) + " = " + b.valor + "\n";
+        }
+        return "Resultado:\n" + cadena + "\n";
     }
 }
